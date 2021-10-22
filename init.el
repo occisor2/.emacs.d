@@ -544,6 +544,15 @@
         lsp-semantic-tokens-enable nil
         lsp-semantic-tokens-honor-refresh-requests t))
 
+;; Manage Git repos directly from Emacs
+(use-package magit
+  :defer t)
+
+(use-package transient
+  :defer t
+  :config
+  (setq transient-history-file (concat my-cache-dir "transient.history")))
+
 ;;;; Programming languages
 
 ;;; Emacs Lisp
