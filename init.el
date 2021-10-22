@@ -76,7 +76,8 @@
 (setq custom-file (concat my-local-dir "custom.el"))
 
 ;; Load settings from `custom-file'
-(load custom-file)
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;; Store eln-cache for native comp in `my-cache-dir'
 (when (boundp 'native-comp-eln-load-path)
