@@ -617,13 +617,14 @@
 
   ;; Default styles for each language I use
   (setq c-default-style '((c-mode . "personal")
+                          (c++-mode . "personal")
                           (awk-mode . "awk"))))
 
 (use-package ccls
   :hook
-  ((c-mode . (lambda ()
-               (require 'ccls)
-               (lsp-deferred)))))
+  (((c-mode c++-mode) . (lambda ()
+                          (require 'ccls)
+                          (lsp-deferred)))))
 
 ;;; Python
 
