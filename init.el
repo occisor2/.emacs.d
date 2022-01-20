@@ -41,7 +41,7 @@
 (use-package general
   :config
   ;; Leader key
-  (defconst my-leader "C-c m")
+  (defconst my-leader "C-c")
   
   ;; Custom definers
   (general-create-definer my-leader-def
@@ -64,8 +64,8 @@
     "w r" '(hydra-my-resize/body :wk "resize"))
   :config
   (defhydra hydra-my-resize (:color red)
-    ("j" enlarge-window "enlarge vertically")
-    ("k" shrink-window "shrink vertically")
+    ("k" enlarge-window "enlarge vertically")
+    ("j" shrink-window "shrink vertically")
     ("h" shrink-window-horizontally "shrink horizontally")
     ("l" enlarge-window-horizontally "enlarge horizontally")
     ("q" nil "quit")))
@@ -431,6 +431,9 @@
 (use-package helm-xref
   :after helm)
 
+;; Terminal emulation
+(use-package vterm)
+
 ;; An amazing calculator
 (use-package calc
   :defer t
@@ -503,7 +506,8 @@
   :diminish org-indent-mode
   :hook
   ((org-mode . (lambda ()
-                 (org-indent-mode t))))
+                 (org-indent-mode t)
+                 (auto-fill-mode t))))
   :config
   (setq org-catch-invisible-edits 'smart))
 
@@ -524,6 +528,8 @@
                  (lsp-enable-which-key-integration)
                  (yas-minor-mode)
                  (setq-local company-transformers nil))))
+  :init
+  (setq lsp-keymap-prefix "C-c m l")
   :config
   (setq lsp-idle-delay 0.05
         lsp-log-io nil
@@ -627,16 +633,9 @@
                           (lsp-deferred)))))
 
 ;;; Python
-
-(use-package conda
-  :defer t
-  :config
-  (setq conda-anaconda-home (expand-file-name "~/.local/anaconda3/")
-        conda-env-home-directory (expand-file-name "~/.local/anaconda3/")
-        conda-env-subdirectory "envs"))
-
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
+<<<<<<< HEAD
                           (require 'lsp-pyright)
                           (lsp-deferred))))
 
@@ -647,3 +646,7 @@
   (((sly-mrepl-mode lisp-mode) . company-mode))
   :config
   (setq sly-complete-symbol-function #'sly-simple-completions))
+=======
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
+>>>>>>> 4d74e217ca717f9f26bdcd6992fe7a2c785b2665
