@@ -638,3 +638,11 @@
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp-deferred))))
+
+;;; Common Lisp
+(use-package sly
+  :defer t
+  :hook
+  (((sly-mrepl-mode lisp-mode) . company-mode))
+  :config
+  (setq sly-complete-symbol-function #'sly-simple-completions))
