@@ -635,8 +635,8 @@
 ;;; Python
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
 
 ;;; Common Lisp
 (use-package sly
@@ -645,5 +645,3 @@
   (((sly-mrepl-mode lisp-mode) . company-mode))
   :config
   (setq sly-complete-symbol-function #'sly-simple-completions))
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))
