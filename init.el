@@ -441,7 +441,16 @@
   :after helm)
 
 ;; Terminal emulation
-(use-package vterm)
+(use-package vterm
+  :defer t)
+
+(use-package vterm-toggle
+  :defer t
+  :general
+  (my-leader-def
+    "o t" 'vterm-toggle-cd)
+  :config
+  (setq vterm-toggle-cd-auto-create-buffer nil))
 
 ;; An amazing calculator
 (use-package calc
