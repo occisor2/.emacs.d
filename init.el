@@ -169,6 +169,9 @@
 ;; Require final newlines always to conform to POSIX
 (setq require-final-newline t)
 
+;; Add newlines with C-n
+(setq next-line-add-newlines t)
+
 ;; Define and bind a few commands for making using the mark in tmm better
 (defun my-push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
