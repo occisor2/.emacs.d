@@ -70,6 +70,14 @@
     ("l" enlarge-window-horizontally "enlarge horizontally")
     ("q" nil "quit")))
 
+;; bind my custom custom commands
+(add-to-list 'load-path (expand-file-name "local" default-directory))
+(require 'mylib)
+
+(general-def
+  [remap kill-region] 'my-kill-line-if-no-region
+  "M-o" 'my-open-line-above)
+
 ;;; Editor settings
 
 ;; Store custom file in `my-local-dir'
