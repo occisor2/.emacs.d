@@ -357,6 +357,15 @@
 
 ;;; Misc. features and third party packages
 
+;; Abbrevs
+(setq abbrev-file-name (expand-file-name "abbrev.el" my-local-dir)
+      save-abbrevs 'silently)
+(add-hook 'after-init-hook #'abbrev-mode)
+(diminish 'abbrev-mode)
+
+;; Auto Insert
+;; (use-package autoinsert)
+
 ;; Keep track of recently opened files
 (use-package recentf
   :hook
