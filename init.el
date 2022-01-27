@@ -539,6 +539,13 @@
   :defer t
   :diminish)
 
+;; Tree Sitter
+(use-package tree-sitter
+  :defer t)
+
+(use-package tree-sitter-langs
+  :defer t)
+
 ;; Language server protocol client
 (use-package lsp-mode
   :hook
@@ -609,6 +616,8 @@
   ((c-mode-common . (lambda ()
                       ;; Common settings across all cc-modes
                       (c-toggle-auto-newline t) ; Automatically insert newlines
+                      (tree-sitter-mode t)
+                      (tree-sitter-hl-mode t)
                       )))
   :general
   (general-def
