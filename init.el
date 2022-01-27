@@ -51,11 +51,29 @@
     "b" '(:ignore t :wk "buffer")
     "u" '(:ignore t :wk "ui")
     "w" '(:ignore t :wk "window")
-    "o" '(:ignore t :wk "open"))
+    "o" '(:ignore t :wk "open")
+    "f" '(:ignore t :wk "file"))
 
   (general-create-definer my-major-mode-def
     :prefix (concat my-leader " m")
     "" '(:ignore t :wk "major mode")))
+
+;; File shortcuts
+(defmacro my-file-shortcut (file-name)
+  `(lambda ()
+     (interactive)
+     (find-file ,file-name)))
+
+;; (defmacro my-file-shortcut-def (&body body)
+;;   `(my-leader-def
+;;      ,(cl-loop for )))
+
+;; (my-file-shortcut-def
+;;  )
+
+(my-leader-def
+  "f i" '((my-file-shortcut user-init-file) :wk "init")
+  "f p" (my-file-shortcut (expand-file-name "~/projects")))
 
 ;; hydra for making chords
 (use-package hydra
