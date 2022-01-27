@@ -628,6 +628,10 @@
 
 (add-hook 'emacs-lisp-mode-hook #'my-emacs-lisp-mode-hook)
 
+(use-package lisp-extra-font-lock
+  :hook
+  ((emacs-lisp-mode . lisp-extra-font-lock-mode)))
+
 (my-major-mode-def
   :keymaps 'emacs-lisp-mode-map
   "e" '(:ignore t :wk "eval")
