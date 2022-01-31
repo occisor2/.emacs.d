@@ -702,6 +702,21 @@
 (use-package sly
   :defer t
   :hook
-  (((sly-mrepl-mode lisp-mode) . company-mode))
+  ((sly-mrepl-mode . company-mode))
+  :init
+  (setq inferior-lisp-program "sbcl")
   :config
   (setq sly-complete-symbol-function #'sly-simple-completions))
+
+(use-package lisp-mode
+  :straight nil
+  :hook
+  ((lisp-mode . (lambda ()
+                  (company-mode t)
+                  (sly))))
+  :config
+  (setq lisp-indent-function #'common-lisp-indent-function))
+
+
+
+
