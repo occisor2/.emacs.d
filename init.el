@@ -620,7 +620,8 @@
   (setq-local company-backends
               '(company-files
                 company-capf
-                company-keywords))
+                company-keywords)
+              lisp-indent-function #'lisp-indent-function)
   (company-mode t))
 
 (add-hook 'emacs-lisp-mode-hook #'my-emacs-lisp-mode-hook)
