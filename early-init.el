@@ -1,9 +1,9 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
 ;; Set native-comp cache directory early
-(setq native-comp-eln-load-path
-      (list (expand-file-name (concat user-emacs-directory
-                                      "local/eln-cache/"))))
+(when (boundp 'native-comp-eln-load-path)
+  (setcar native-comp-eln-load-path
+          (expand-file-name (concat user-emacs-directory "local/eln-cache/"))))
 
 ;; Disable garbage collection during startup to decrease startup
 ;; times. It is reset later with `gcmh-mode'.
