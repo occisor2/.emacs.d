@@ -80,10 +80,7 @@
     ("l" enlarge-window-horizontally "enlarge horizontally")
     ("q" nil "quit")))
 
-;; bind my custom custom commands
-(add-to-list 'load-path (expand-file-name "local" default-directory))
-(require 'mylib)
-
+;; Bind my custom editing functions
 (general-def
   [remap kill-region] 'my-kill-line-if-no-region
   "M-o" 'my-open-line-above)
@@ -234,6 +231,12 @@
 	    gcmh-high-cons-threshold (* 16 1024 1024)))
 
 ;;; UI
+
+;; Set font
+(defvar my-default-font "DejaVuSansMono Nerd Font-10"
+  "The default font my init file loads.")
+(when (font-exists-p my-default-font)
+  (set-frame-font my-default-font nil t))
 
 ;; Unset variables so function calls work
 (setq menu-bar-mode nil

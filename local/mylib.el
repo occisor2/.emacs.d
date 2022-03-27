@@ -21,4 +21,32 @@ cursor at its beginning, according to the current mode."
   (forward-line (- N))
   (indent-according-to-mode))
 
+(defun font-exists-p (font)
+  "Predicate for whether a font is installed on the host system."
+  (if (null (x-list-fonts font))
+      nil
+    t))
+
+(defmacro my-filesc-def (&rest body)
+  "A wrapper over my-leader-def that elimates the need for boiler plate code for
+defining lambdas around find-file commands.
+
+This macro is absolutely disgusting and inefficeint. I don't know
+much about macros, so this was some practice at understanding them.
+This will get cleaned up at some point, but it works for now."
+  (cl-do* ((body-len (length body))
+           (sc-list nil   `(,(concat "f " (nth index body))
+                             (quote
+                              ((lambda ()
+                                 (interactive)
+                                 (find-file
+                                  ,(expand-file-name (nth (1+ index)
+                                                          body))))
+                               :wk ,(file-name-nondirectory (nth (1+ index)
+                                                                 body))))))
+           (forms (list 'my-leader-def) (dolist (x sc-list forms)
+                                          (push x forms)))
+           (index 0 (+ 2 index)))
+          ((>= index body-len) (nreverse forms))))
+
 (provide 'mylib)
