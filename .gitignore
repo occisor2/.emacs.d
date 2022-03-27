@@ -1,4 +1,4 @@
-eln-cache/
 cache/
+local/eln-cache/
 local/straight/
 local/custom.el
