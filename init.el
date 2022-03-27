@@ -29,6 +29,10 @@
 
 (straight-use-package 'diminish)
 
+;; load my personal library
+(add-to-list 'load-path (expand-file-name "local" default-directory))
+(require 'mylib)
+
 ;;; Keybinding
 
 ;; which-key.el for displaying binds
