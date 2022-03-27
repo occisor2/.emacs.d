@@ -63,28 +63,6 @@
     "" '(:ignore t :wk "major mode")))
 
 ;; File shortcuts
-(defmacro my-filesc-def (&rest body)
-  "A wrapper over my-leader-def that elimates the need for boiler plate code for
-defining lambdas around find-file commands.
-
-This macro is absolutely disgusting and inefficeint. I don't know
-much about macros, so this was some practice at understanding them.
-This will get cleaned up at some point, but it works for now."
-  (cl-do* ((body-len (length body))
-           (sc-list nil   `(,(concat "f " (nth index body))
-                             (quote
-                              ((lambda ()
-                                 (interactive)
-                                 (find-file
-                                  ,(expand-file-name (nth (1+ index)
-                                                          body))))
-                               :wk ,(file-name-nondirectory (nth (1+ index)
-                                                                 body))))))
-           (forms (list 'my-leader-def) (dolist (x sc-list forms)
-                                          (push x forms)))
-           (index 0 (+ 2 index)))
-          ((>= index body-len) (nreverse forms))))
-
 (my-filesc-def
  "p" "~/projects"
  "i" "~/.emacs.d/init.el")
