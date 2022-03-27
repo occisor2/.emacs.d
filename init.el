@@ -94,9 +94,11 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; Store eln-cache for native comp in `my-cache-dir'
-(when (boundp 'native-comp-eln-load-path)
-  (add-to-list 'native-comp-eln-load-path (concat my-cache-dir "eln/")))
+;; Only report errors in wanring buffers
+(setq warning-minimum-level :error)
+
+;; Native comp
+(setq native-comp-async-report-warnings-errors nil)
 
 ;; Quiet startup
 (setq inhibit-startup-message t
