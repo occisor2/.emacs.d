@@ -319,9 +319,29 @@
     "u w" '(whitespace-mode :wk "whitespace")))
 
 ;; Theme
+(use-package doom-themes
+  :config
+  (load-theme 'doom-one t))
+
 (use-package gruvbox-theme
+  :disabled
   :config
   (load-theme 'gruvbox-dark-medium t))
+
+(use-package zenburn-theme
+  :disabled
+  :config
+  (load-theme 'zenburn t))
+
+(use-package nano-theme
+  :disabled
+  :config
+  (load-theme 'nano-dark t))
+
+(use-package darktooth-theme
+  :disabled
+  :config
+  (load-theme 'darktooth t))
 
 ;; Highlight the current line in prog modes
 (use-package hl-line
