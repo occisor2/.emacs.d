@@ -670,9 +670,14 @@
   :hook
   ((c-mode-common . (lambda ()
                       ;; Common settings across all cc-modes
-                      (c-toggle-auto-newline t) ; Automatically insert newlines
-                      (tree-sitter-mode t)
-                      (tree-sitter-hl-mode t)
+                      (auto-fill-mode 1) ; Auto fill long lines
+                      (c-toggle-auto-newline 1) ; Automatically insert newlines
+
+                      ;; Syntax highlighting
+                      (require 'tree-sitter)
+                      (require 'tree-sitter-langs)
+                      (tree-sitter-mode 1)
+                      (tree-sitter-hl-mode 1)
                       )))
   :general
   (general-def
@@ -738,7 +743,3 @@
                   (sly))))
   :config
   (setq lisp-indent-function #'common-lisp-indent-function))
-
-
-
-
