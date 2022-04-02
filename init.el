@@ -64,7 +64,7 @@
 
 ;; File shortcuts
 (my-filesc-def
- "p" "~/projects"
+ "p" "~/projects/"
  "i" "~/.emacs.d/init.el")
 
 ;; hydra for making chords
