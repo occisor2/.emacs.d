@@ -400,6 +400,12 @@
   (general-def
     "C-x o" 'ace-window))
 
+;; Shrink border betwen windows
+(setq window-divider-default-places t
+      window-divider-default-bottom-width 1
+      window-divider-default-right-width 1)
+(add-hook 'after-init-hook #'window-divider-mode)
+
 ;;; Misc. features and third party packages
 
 ;; Abbrevs
