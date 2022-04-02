@@ -26,7 +26,6 @@
 ;; Required packages
 (setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
-
 (straight-use-package 'diminish)
 
 ;; load my personal library
@@ -161,7 +160,7 @@
 (setq require-final-newline t)
 
 ;; Add newlines with C-n
-(setq next-line-add-newlines t)
+;; (setq next-line-add-newlines t)
 
 ;; Define and bind a few commands for making using the mark in tmm better
 (defun my-push-mark-no-activate ()
