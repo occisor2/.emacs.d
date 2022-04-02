@@ -26,7 +26,6 @@
 ;; Required packages
 (setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
-
 (straight-use-package 'diminish)
 
 ;; load my personal library
@@ -161,7 +160,7 @@
 (setq require-final-newline t)
 
 ;; Add newlines with C-n
-(setq next-line-add-newlines t)
+;; (setq next-line-add-newlines t)
 
 ;; Define and bind a few commands for making using the mark in tmm better
 (defun my-push-mark-no-activate ()
@@ -320,9 +319,29 @@
     "u w" '(whitespace-mode :wk "whitespace")))
 
 ;; Theme
+(use-package doom-themes
+  :config
+  (load-theme 'doom-one t))
+
 (use-package gruvbox-theme
+  :disabled
   :config
   (load-theme 'gruvbox-dark-medium t))
+
+(use-package zenburn-theme
+  :disabled
+  :config
+  (load-theme 'zenburn t))
+
+(use-package nano-theme
+  :disabled
+  :config
+  (load-theme 'nano-dark t))
+
+(use-package darktooth-theme
+  :disabled
+  :config
+  (load-theme 'darktooth t))
 
 ;; Highlight the current line in prog modes
 (use-package hl-line
@@ -381,6 +400,12 @@
   (general-def
     "C-x o" 'ace-window))
 
+;; Shrink border betwen windows
+(setq window-divider-default-places t
+      window-divider-default-bottom-width 1
+      window-divider-default-right-width 1)
+(add-hook 'after-init-hook #'window-divider-mode)
+
 ;;; Misc. features and third party packages
 
 ;; Abbrevs
@@ -437,7 +462,6 @@
 
 ;; Helm. Enough said
 (use-package helm
-  :diminish
   :hook
   ((after-init . helm-mode))
   :general
@@ -646,9 +670,14 @@
   :hook
   ((c-mode-common . (lambda ()
                       ;; Common settings across all cc-modes
-                      (c-toggle-auto-newline t) ; Automatically insert newlines
-                      (tree-sitter-mode t)
-                      (tree-sitter-hl-mode t)
+                      (auto-fill-mode 1) ; Auto fill long lines
+                      (c-toggle-auto-newline 1) ; Automatically insert newlines
+
+                      ;; Syntax highlighting
+                      (require 'tree-sitter)
+                      (require 'tree-sitter-langs)
+                      (tree-sitter-mode 1)
+                      (tree-sitter-hl-mode 1)
                       )))
   :general
   (general-def
@@ -714,7 +743,3 @@
                   (sly))))
   :config
   (setq lisp-indent-function #'common-lisp-indent-function))
-
-
-
-
