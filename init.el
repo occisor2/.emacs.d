@@ -462,7 +462,6 @@
 
 ;; Helm. Enough said
 (use-package helm
-  :diminish
   :hook
   ((after-init . helm-mode))
   :general
