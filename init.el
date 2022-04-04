@@ -678,7 +678,10 @@
                       (require 'tree-sitter-langs)
                       (tree-sitter-mode 1)
                       (tree-sitter-hl-mode 1)
-                      )))
+                      ))
+   (c++-mode . (lambda ()
+                 (setq-local c-macro-preprocessor
+                             (concat "g++ -E -C " buffer-file-name)))))
   :general
   (general-def
     :keymaps 'c-mode-map
