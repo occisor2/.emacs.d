@@ -687,7 +687,6 @@
     :keymaps 'c-mode-map
     "C-d" 'smart-hungry-delete-forward-char)
   :config
-  ;; C specific settings
   (defun c-semi&comma-no-newlines-before-nonblanks ()
     "Do not add newlines after semicolons when followed by a non-newline."
     (save-excursion
@@ -698,6 +697,18 @@
 	      'stop
         nil)))
 
+  ;; (defun my-c-macro-expand (beg end)
+  ;;   "If the region is active, expand macros in the region. If not, then expand
+  ;;    every macro in the file, excluding includes."
+  ;;   (interactive "r")
+  ;;   (if (use-region-p)
+  ;;       (c-macro-expand beg end nil)
+  ;;     (save-excursion
+  ;;       (let ((end-of-includes-pos (re-search-forward "#include <.*>" 20)))
+  ;;         (c-macro-expand end-of-includes-pos point-max))
+  ;;       (message "worked"))))
+
+  ;; C specific settings
   (defconst my-c-style
     '((c-basic-offset . 4)
       (c-tab-always-indent . t)
@@ -736,13 +747,11 @@
   :init
   (setq inferior-lisp-program "sbcl")
   :config
-  (setq sly-complete-symbol-function #'sly-simple-completions))
+  (setq sly-common-lisp-style 'sbcl))
 
 (use-package lisp-mode
   :straight nil
   :hook
   ((lisp-mode . (lambda ()
                   (company-mode t)
-                  (sly))))
-  :config
-  (setq lisp-indent-function #'common-lisp-indent-function))
+                  (sly)))))
