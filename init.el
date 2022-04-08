@@ -248,6 +248,9 @@
       tool-bar-mode nil
       scroll-bar-mode nil)
 
+;; Disable tooltips
+(tooltip-mode 0)
+
 ;; Start with the frame maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
