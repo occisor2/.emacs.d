@@ -82,7 +82,8 @@
 ;; Bind my custom editing functions
 (general-def
   [remap kill-region] 'my-kill-line-if-no-region
-  "M-o" 'my-open-line-above)
+  "M-o" 'my-open-line-above
+  "C-x C-b" 'ibuffer)
 
 ;;; Editor settings
 
