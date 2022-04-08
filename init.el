@@ -93,8 +93,11 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; Only report errors in wanring buffers
-(setq warning-minimum-level :error)
+;; Allow help functions to autoload functions to get doc strings
+(setq help-enable-symbol-autoload t)
+
+;; ;; Only report errors in wanring buffers
+;; (setq warning-minimum-level :error)
 
 ;; Native comp
 (setq native-comp-async-report-warnings-errors nil)
@@ -267,7 +270,8 @@
 ;; Minibuffer settings
 (setq enable-recursive-minibuffers t
       echo-keystrokes 0.02
-      resize-mini-windows t)
+      resize-mini-windows t
+      read-minibuffer-restore-windows t)
 
 ;; Try to keep the cursor out of the read-only portions of the minibuffer
 (setq minibuffer-prompt-properties
@@ -275,7 +279,7 @@
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 ;; Make yes/no prompts y/n
-(fset #'yes-or-no-p #'y-or-n-p)
+(setq use-short-answers t)
 
 ;; Disable blinking cursor
 (blink-cursor-mode -1)
