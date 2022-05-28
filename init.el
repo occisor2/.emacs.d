@@ -758,10 +758,13 @@
   (setq inferior-lisp-program "sbcl"
         sly-common-lisp-style-default "modern"))
 
+(use-package sly-asdf
+  :after sly)
+
 (use-package lisp-mode
   :straight nil
   :hook
   ((lisp-mode . (lambda ()
                   (company-mode t)
-                  (setq-local company-minimum-prefix-length 3)
-                  (sly)))))
+                  (setq-local company-minimum-prefix-length 3
+                              fill-column 100)))))
