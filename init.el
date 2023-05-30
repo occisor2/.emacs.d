@@ -224,6 +224,16 @@
   "C-`" 'push-mark-no-activate
   "M-`" 'jump-to-mark)
 
+;; Line numbers
+(use-package display-line-numbers
+  :hook
+  (prog-mode . display-line-numbers-mode))
+
+;; Rainbow pans
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
 ;; Helm
 (use-package helm
   :hook
@@ -232,26 +242,73 @@
   ("M-x" 'helm-M-x)
   ("C-x C-f" 'helm-find-files)
   ("C-x b" 'helm-mini)
-  ("C-'" 'helm-mark-ring))
+  ("C-'" 'helm-mark-ring)
+  ("C-s" 'helm-occur)
+  ("C-h a" 'helm-apropos)
+  :config
+  (setq helm-apropos-fuzzy-match t))
 
 ;; Company
 (use-package company
+  :defer t
+  :config
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.0))
+
+;; Avy
+(use-package avy
+  :general
+  ("M-g M-g" 'avy-goto-line)
+  ("C-;" 'avy-goto-char)
+  ("C-:" 'avy-goto-char-2))
+
+;; Snippets
+(use-package yasnippet
   :defer t)
+
+;; LSP Client
+(use-package lsp-mode
+  :hook
+  ((lsp-mode . (lambda ()
+                 (lsp-enable-which-key-integration)))
+   (c++-mode . lsp))
+  :config
+  (setq lsp-enable-on-type-formatting nil
+        lsp-idle-delay 0.1
+        lsp-session-file (expand-file-name "lsp-session"
+                                           my-cache-dir))
+  
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
 ;;; Programming languages
 
 ;; C/C++
 (use-package cc-mode
+  :hook
+  ((c++-mode . (lambda ()
+                 (yas-minor-mode 1))))
   :config
   (defconst my-cpp-style
-    '((c-basic-offset . 4)
+    '("linux"
+      (c-basic-offset . 4)
       (c-doc-comment-style . doxygen)
       (c-indent-comments-syntactically-p . t)
-      (c-hanging-braces-alist . ())))
+      (c-hanging-braces-alist . ())
+      (c-offsets-alist . ((inline-open . 0)))
+      (c-cleanup-list . (brace-else-brace
+                         brace-eleseif-brace
+                         defun-close-semi
+                         comment-close-slash))))
   
-  (c-add-style "cpp-personal" my-cpp-style)
+  (c-add-style "my-cpp-style" my-cpp-style)
   
-  (setq c-default-style '((c++-mode . "cpp-personal")
+  (setq c-default-style '((c++-mode . "my-cpp-style")
                           (java-mode . "java")
                           (awk-mode . "awk")
-                          (other . "linux"))))
+                          (other . "linux")))
+
+  (setq-default c-auto-newline t))
+
+;; Yuck
+(use-package yuck-mode
+  :defer t)

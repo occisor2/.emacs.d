@@ -3,7 +3,9 @@
 ;; Change the default location of native comp files
 (when (native-comp-available-p)
   (setcar native-comp-eln-load-path
-	  (expand-file-name (concat user-emacs-directory "local/eln-cache/"))))
+	  (expand-file-name (concat user-emacs-directory
+                                "local/eln-cache/")))
+  (setq native-comp-async-report-warnings-errors 'silent))
 
 ;; Disable tool, menu, and scroll bars before GUI loads to prevent flash
 (push '(menu-bar-lines . 0)   default-frame-alist)
