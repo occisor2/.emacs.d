@@ -320,6 +320,28 @@
 (use-package magit
   :defer t)
 
+;; Eshell
+(use-package eshell
+  :defer t
+  :general
+  (my-leader-def
+    "o e" 'eshell-other-window)
+  :config
+  (defun eshell-other-window (use-this-window-p)
+    "Open a new eshell buffer in other window or use the same window."
+    (interactive "P")
+    (let ((buff (eshell)))
+      (if use-this-window-p
+          (switch-to-buffer buff)
+        (switch-to-buffer (other-buffer buff))
+        (switch-to-buffer-other-window buff))))
+
+  (use-package eshell-prompt-extras
+    :config
+    (setq eshell-prompt-function 'epe-theme-lambda))
+
+  (setq eshell-directory-name (expand-file-name "eshell" my-local-dir)))
+
 ;;; Programming languages
 
 ;; C/C++
