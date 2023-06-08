@@ -222,7 +222,9 @@
 ;; Saveplace
 (use-package saveplace
   :hook
-  (after-init . save-place-mode))
+  (after-init . save-place-mode)
+  :init
+  (setq save-place-file (expand-file-name "saveplace" my-local-dir)))
 
 ;; Transient mark mode
 (defun push-mark-no-activate ()
