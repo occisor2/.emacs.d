@@ -245,6 +245,7 @@
   ("C-'" 'helm-mark-ring)
   ("C-s" 'helm-occur)
   ("C-h a" 'helm-apropos)
+  ("M-y" 'helm-show-kill-ring)
   :config
   (setq helm-apropos-fuzzy-match t))
 
