@@ -310,6 +310,12 @@
   :init
   (smart-hungry-delete-add-default-hooks))
 
+;; Transient
+(use-package transient
+  :defer t
+  :config
+  (setq transient-history-file (expand-file-name "transient-history" my-local-dir)))
+
 ;;; Programming languages
 
 ;; C/C++
