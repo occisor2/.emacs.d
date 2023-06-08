@@ -316,6 +316,10 @@
   :config
   (setq transient-history-file (expand-file-name "transient-history" my-local-dir)))
 
+;; Git client
+(use-package magit
+  :defer t)
+
 ;;; Programming languages
 
 ;; C/C++
