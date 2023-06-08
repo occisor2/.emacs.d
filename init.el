@@ -299,6 +299,15 @@
   
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
+;; Hungry delete
+(use-package smart-hungry-delete
+  :general
+  ([remap delete-backward-char] 'smart-hungry-delete-backward-char)
+  ([remap backward-delete-char-untabify] 'smart-hungry-delete-backward-char)
+  ([remap delete-char] 'smart-hungry-delete-forward-char)
+  :init
+  (smart-hungry-delete-add-default-hooks))
+
 ;;; Programming languages
 
 ;; C/C++
