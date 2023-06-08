@@ -206,6 +206,11 @@
 (use-package whitespace
   :defer t)
 
+;; Saveplace
+(use-package saveplace
+  :hook
+  (after-init . save-place-mode))
+
 ;; Transient mark mode
 (defun push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
