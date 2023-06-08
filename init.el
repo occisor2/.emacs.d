@@ -331,7 +331,10 @@
 
 ;; Git client
 (use-package magit
-  :defer t)
+  :defer t
+  :config
+  (with-system windows-nt
+    (setenv "SSH_ASKPASS" "git-gui--askpass")))
 
 ;; Eshell
 (use-package eshell
