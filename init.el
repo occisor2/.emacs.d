@@ -350,6 +350,16 @@
 
 ;;; Programming languages
 
+;; Emacs Lisp
+(my-major-def
+  :keymaps 'emacs-lisp-mode-map
+  "m" 'emacs-lisp-macroexpand
+  "b" 'eval-buffer
+  "r" 'eval-region)
+
+(add-hook 'emacs-lisp-mode-hook '(lambda ()
+                                   (company-mode 1)))
+
 ;; C/C++
 (use-package cc-mode
   :hook
