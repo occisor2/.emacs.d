@@ -42,6 +42,20 @@
 ;; General for keybinds
 (use-package general
   :defer t)
+
+;; Declare prefixes for custom bindings
+
+;; 90% of my custom bindings are under mapped under this keymap, except for
+;; the select few that need super quick access frquently, like Avy's functions.
+(defconst leader-prefix "C-c m")
+(defconst major-prefix "C-.")
+
+(general-create-definer my-leader-def
+  :prefix leader-prefix)
+
+(general-create-definer my-major-def
+  :prefix major-prefix)
+
 ;;; Graphical interface preferences
 
 ;; These are disbaled in the early-init, but these variables need to
