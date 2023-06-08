@@ -39,6 +39,9 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; General for keybinds
+(use-package general
+  :defer t)
 ;;; Graphical interface preferences
 
 ;; These are disbaled in the early-init, but these variables need to
@@ -177,10 +180,6 @@
   (load-theme my-backup-theme t))
 
 ;;; Package/Features/Modes configuration
-
-;; General
-(use-package general
-  :defer t)
 
 ;; Whichkey
 (use-package which-key
