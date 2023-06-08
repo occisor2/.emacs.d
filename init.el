@@ -342,6 +342,12 @@
 
   (setq eshell-directory-name (expand-file-name "eshell" my-local-dir)))
 
+;; Server settings
+(use-package server
+  :defer t
+  :config
+  (setq server-auth-dir (expand-file-name "server" my-local-dir)))
+
 ;;; Programming languages
 
 ;; C/C++
