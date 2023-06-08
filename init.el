@@ -41,20 +41,33 @@
 
 ;; General for keybinds
 (use-package general
-  :defer t)
+  :defer t
+  ;; :commands
+  ;; (my-create-prefix-definer)
+  :config
+  (defconst leader-prefix "C-c m")
+  (defconst major-prefix "C-.")
+  
+;;   (defmacro my-create-prefix-definer (prefix name &rest body)
+;;     "Defines a new general definer called my-`name'-definer with prefix
+;; `prefix' appended to `leader-prefix', a which-key hint under `name',
+;; and the provided `body'."
+;;     (declare (indent defun))
+;;     (general-create-definer
+;;       ;; definer name
+;;       (make-symbol (concat "my-" name "-definer"))
+;;       ;; prefix key
+;;       :prefix (concat leader-prefix " " prefix)
+;;       ;; which-key hint
+;;       "" (:ignore t :wk ,name)
+;;       ;; body
+;;       ,@body))
 
-;; Declare prefixes for custom bindings
-
-;; 90% of my custom bindings are under mapped under this keymap, except for
-;; the select few that need super quick access frquently, like Avy's functions.
-(defconst leader-prefix "C-c m")
-(defconst major-prefix "C-.")
-
-(general-create-definer my-leader-def
-  :prefix leader-prefix)
-
-(general-create-definer my-major-def
-  :prefix major-prefix)
+  ;; Declare definers
+  (general-create-definer my-leader-def
+    :prefix leader-prefix)
+  (general-create-definer my-major-def
+    :prefix major-prefix))
 
 ;;; Graphical interface preferences
 
