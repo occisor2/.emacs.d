@@ -301,20 +301,39 @@
   :defer t)
 
 ;; LSP Client
-(use-package lsp-mode
-  :hook
-  ((lsp-mode . (lambda ()
-                 (lsp-enable-which-key-integration)))
-   (c++-mode . lsp))
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (setq lsp-enable-on-type-formatting nil
-        lsp-enable-text-document-color nil
-        lsp-enable-folding nil
-        lsp-idle-delay 0.1
-        lsp-session-file (expand-file-name "lsp-session"
-                                           my-cache-dir)))
+;; (use-package lsp-mode
+;;   :hook
+;;   ((lsp-mode . (lambda ()
+;;                  (lsp-enable-which-key-integration)))
+;;    (c++-mode . lsp))
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :config
+;;   (setq lsp-enable-on-type-formatting nil
+;;         lsp-enable-text-document-color nil
+;;         lsp-enable-folding nil
+;;         lsp-idle-delay 0.1
+;;         lsp-session-file (expand-file-name "lsp-session"
+;;                                            my-cache-dir)))
+
+(use-package eglot
+  :general
+  (:keymaps
+   'eglot-mode-map
+   :preifx "C-,"
+   "M-R" 'eglot-reconnect
+   "S" 'eglot-shutdown
+   "M-S" 'eglot-shutdown-all
+   "r" 'eglot-rename
+   "f" 'eglot-format
+   "F" 'eglot-format-buffer
+   "a a" 'eglot-code-actions
+   "a o" 'eglot-code-action-organize-imports
+   "a q" 'eglot-code-action-quickfix
+   "a e" 'eglot-code-action-extract
+   "a i" 'eglot-code-action-inline
+   "a r" 'eglot-code-action-rewrite
+   "C-i" 'eglot-inlay-hints-mode))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
