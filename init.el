@@ -347,6 +347,10 @@
   :defer t)
 
 (use-package eglot
+  :hook
+  ((eglot-connect-hook . (lambda ()
+                           (company-mode 1)
+                           (yas-minor-mode 1)))
   :general
   (:keymaps
    'eglot-mode-map
