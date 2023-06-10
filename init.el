@@ -368,7 +368,12 @@
    "a e" 'eglot-code-action-extract
    "a i" 'eglot-code-action-inline
    "a r" 'eglot-code-action-rewrite
-   "C-i" 'eglot-inlay-hints-mode))
+   "C-i" 'eglot-inlay-hints-mode
+   "l" 'flymake-show-buffer-diagnostics
+   "L" 'flymake-show-project-diagnostics
+   "i" 'imenu)
+  :config
+  (setq eglot-autoshutdown t))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
