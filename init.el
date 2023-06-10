@@ -346,22 +346,6 @@
 (use-package yasnippet
   :defer t)
 
-;; LSP Client
-;; (use-package lsp-mode
-;;   :hook
-;;   ((lsp-mode . (lambda ()
-;;                  (lsp-enable-which-key-integration)))
-;;    (c++-mode . lsp))
-;;   :init
-;;   (setq lsp-keymap-prefix "C-c l")
-;;   :config
-;;   (setq lsp-enable-on-type-formatting nil
-;;         lsp-enable-text-document-color nil
-;;         lsp-enable-folding nil
-;;         lsp-idle-delay 0.1
-;;         lsp-session-file (expand-file-name "lsp-session"
-;;                                            my-cache-dir)))
-
 (use-package eglot
   :general
   (:keymaps
