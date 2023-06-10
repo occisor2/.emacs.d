@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package dash)
+(use-package mmt)
 
 (defmacro with-system (type &rest body)
   "Evaluate BODY if `system-type' equals TYPE."
@@ -12,7 +13,13 @@
   "Check if font is available"
   (if (null (x-list-fonts font)) nil t))
 
-(defmacro def-shortcut (prefix &rest body)
+(defmacro command-wrap (&rest body)
+  "Wraps `body' in an interactive lambda"
+  (declare (indent defun))
+  `(lambda ()
+     (interactive)
+     ,@body))
+
 (defmacro def-file-shortcut (prefix &rest body)
   "A definer for file shorcuts.
 
