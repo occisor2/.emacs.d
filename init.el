@@ -351,10 +351,11 @@
   ((eglot-connect-hook . (lambda ()
                            (company-mode 1)
                            (yas-minor-mode 1)))
+   (c++-ts-mode . eglot-ensure))
   :general
   (:keymaps
    'eglot-mode-map
-   :preifx "C-,"
+   :prefix "C-,"
    "M-R" 'eglot-reconnect
    "S" 'eglot-shutdown
    "M-S" 'eglot-shutdown-all
