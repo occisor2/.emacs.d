@@ -285,8 +285,11 @@
   ("C-s" 'helm-occur)
   ("C-h a" 'helm-apropos)
   ("M-y" 'helm-show-kill-ring)
+  ([remap imenu] 'helm-imenu)
   :config
-  (setq helm-apropos-fuzzy-match t))
+  (setq helm-apropos-fuzzy-match t)
+
+  (use-package helm-xref))
 
 ;; Company
 (use-package company
