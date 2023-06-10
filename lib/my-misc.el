@@ -13,6 +13,7 @@
   (if (null (x-list-fonts font)) nil t))
 
 (defmacro def-shortcut (prefix &rest body)
+(defmacro def-file-shortcut (prefix &rest body)
   "A definer for file shorcuts.
 
 Shortcut keybinds are appending to `prefix' and are given a which-key
