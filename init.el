@@ -152,7 +152,7 @@
 	          tab-width 4)
 
 ;; Change the behavior of the tab key
-(setq-default tab-always-indent 'complete)
+(setq-default tab-always-indent t)
 
 ;; Continuation and truncation
 (setq-default word-wrap t      ; wrap words at whitespace
