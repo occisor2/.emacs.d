@@ -300,7 +300,8 @@
    "<tab>" 'company-complete-common-or-cycle)
   :config
   (setq company-minimum-prefix-length 1
-        company-idle-delay 0.0))
+        company-idle-delay 0.0
+        company-show-quick-access t))
 
 ;; Avy
 (use-package avy
