@@ -439,9 +439,6 @@
 
 ;; C/C++
 (use-package cc-mode
-  :hook
-  ((c++-mode . (lambda ()
-                 (yas-minor-mode 1))))
   :config
   (defconst my-cpp-style
     '("linux"
@@ -449,6 +446,7 @@
       (c-doc-comment-style . doxygen)
       (c-indent-comments-syntactically-p . t)
       (c-hanging-braces-alist . ())
+      (c-hanging-colons-alist . ((access-label . (after))))
       (c-offsets-alist . ((inline-open . 0)))
       (c-cleanup-list . (brace-else-brace
                          brace-eleseif-brace
