@@ -333,6 +333,15 @@
   ("C-;" 'avy-goto-char)
   ("C-:" 'avy-goto-char-2))
 
+;; Projects
+(use-package project
+  :config
+  (setq project-list-file (expand-file-name "projects" my-local-dir)))
+
+;; EDE
+(use-package ede
+  :defer t)
+
 ;; Snippets
 (use-package yasnippet
   :defer t)
