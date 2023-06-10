@@ -310,6 +310,22 @@
                   (doom-modeline-mode 1)
                   (column-number-mode 1))))
 
+;; Treesitter
+(when (boundp 'major-mode-remap-alist)
+  (setq major-mode-remap-alist
+        '((c++-mode . c++-ts-mode))))
+
+(use-package tree-sitter
+  :disabled nil
+  :if (version<= "29" emacs-version)
+  :defer t
+  :config
+  (setq treesit-extra-load-path
+        (list (expand-file-name "tree-sitter" my-local-dir))
+        treesit-language-source-alist
+        '((c "https://github.com/tree-sitter/tree-sitter-c")
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp"))))
+
 ;; Avy
 (use-package avy
   :general
