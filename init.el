@@ -303,6 +303,13 @@
         company-idle-delay 0.0
         company-show-quick-access t))
 
+;; Modeline
+(use-package doom-modeline
+  :hook
+  (after-init . (lambda ()
+                  (doom-modeline-mode 1)
+                  (column-number-mode 1))))
+
 ;; Avy
 (use-package avy
   :general
