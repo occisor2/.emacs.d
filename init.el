@@ -294,6 +294,10 @@
 ;; Company
 (use-package company
   :defer t
+  :general
+  (:keymaps
+   'company-active-map
+   "<tab>" 'company-complete-common-or-cycle)
   :config
   (setq company-minimum-prefix-length 1
         company-idle-delay 0.0))
