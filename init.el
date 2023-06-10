@@ -206,6 +206,12 @@
            (symbol-value my-default-theme) (symbol-value my-backup-theme))
   (load-theme my-backup-theme t))
 
+;; File shortcuts
+;; (def-file-shortcut "C-c f"
+;;   ("i" user-init-file)
+;;   ("e" early-init-file)
+;;   ("p" "~/projects"))
+
 ;;; Package/Features/Modes configuration
 
 ;; Whichkey
