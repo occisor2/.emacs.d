@@ -314,20 +314,21 @@
     (setq doom-modeline-icon nil)))
 
 ;; Treesitter
-(use-package tree-sitter
-  :if (version<= "29" emacs-version)
-  :unless (eq system-type 'window-nt)
-  :defer t
-  :init
-  (when (boundp 'major-mode-remap-alist)
-    (setq major-mode-remap-alist
-          '((c++-mode . c++-ts-mode))))
-  :config
-  (setq treesit-extra-load-path
-        (list (expand-file-name "tree-sitter" my-local-dir))
-        treesit-language-source-alist
-        '((c "https://github.com/tree-sitter/tree-sitter-c")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp"))))
+(without-system window-nt
+  (use-package tree-sitter
+    :if (version<= "29" emacs-version)
+    :defer t
+    :init
+    (when (boundp 'major-mode-remap-alist)
+      (setq major-mode-remap-alist
+            '((c++-mode . c++-ts-mode))))
+    :config
+    (setq treesit-extra-load-path
+          (list (expand-file-name "tree-sitter" my-local-dir))
+          treesit-language-source-alist
+          '((c "https://github.com/tree-sitter/tree-sitter-c")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))))
+
 
 ;; Avy
 (use-package avy
@@ -349,35 +350,36 @@
 (use-package yasnippet
   :defer t)
 
-(use-package eglot
-  :unless (eq system-type 'windows-nt)
-  :hook
-  ((eglot-connect-hook . (lambda ()
-                           (company-mode 1)
-                           (yas-minor-mode 1)))
-   (c++-ts-mode . eglot-ensure))
-  :general
-  (:keymaps
-   'eglot-mode-map
-   :prefix "C-,"
-   "M-R" 'eglot-reconnect
-   "S" 'eglot-shutdown
-   "M-S" 'eglot-shutdown-all
-   "r" 'eglot-rename
-   "f" 'eglot-format
-   "F" 'eglot-format-buffer
-   "a a" 'eglot-code-actions
-   "a o" 'eglot-code-action-organize-imports
-   "a q" 'eglot-code-action-quickfix
-   "a e" 'eglot-code-action-extract
-   "a i" 'eglot-code-action-inline
-   "a r" 'eglot-code-action-rewrite
-   "C-i" 'eglot-inlay-hints-mode
-   "l" 'flymake-show-buffer-diagnostics
-   "L" 'flymake-show-project-diagnostics
-   "i" 'imenu)
-  :config
-  (setq eglot-autoshutdown t))
+;; LSP Client
+(without-system windows-nt
+  (use-package eglot
+    :hook
+    ((eglot-connect-hook . (lambda ()
+                             (company-mode 1)
+                             (yas-minor-mode 1)))
+     (c++-ts-mode . eglot-ensure))
+    :general
+    (:keymaps
+     'eglot-mode-map
+     :prefix "C-,"
+     "M-R" 'eglot-reconnect
+     "S" 'eglot-shutdown
+     "M-S" 'eglot-shutdown-all
+     "r" 'eglot-rename
+     "f" 'eglot-format
+     "F" 'eglot-format-buffer
+     "a a" 'eglot-code-actions
+     "a o" 'eglot-code-action-organize-imports
+     "a q" 'eglot-code-action-quickfix
+     "a e" 'eglot-code-action-extract
+     "a i" 'eglot-code-action-inline
+     "a r" 'eglot-code-action-rewrite
+     "C-i" 'eglot-inlay-hints-mode
+     "l" 'flymake-show-buffer-diagnostics
+     "L" 'flymake-show-project-diagnostics
+     "i" 'imenu)
+    :config
+    (setq eglot-autoshutdown t)))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
