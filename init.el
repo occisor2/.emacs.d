@@ -443,11 +443,12 @@
   "b" 'eval-buffer
   "r" 'eval-region)
 
-(add-hook 'emacs-lisp-mode-hook '(lambda ()
-                                   (company-mode 1)))
+(add-hook 'emacs-lisp-mode-hook #'(lambda ()
+                                    (company-mode 1)))
 
 ;; C/C++
 (use-package cc-mode
+  :defer t
   :config
   (defconst my-cpp-style
     '("linux"
