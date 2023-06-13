@@ -350,6 +350,7 @@
   :defer t)
 
 (use-package eglot
+  :unless (eq system-type 'windows-nt)
   :hook
   ((eglot-connect-hook . (lambda ()
                            (company-mode 1)
