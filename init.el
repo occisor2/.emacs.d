@@ -431,6 +431,11 @@
 
 ;;; Programming languages
 
+;; Programming modes
+(general-def
+  :keymaps 'prog-mode-map
+  "C-M-;" 'uncomment-region)
+
 ;; Emacs Lisp
 (my-major-def
   :keymaps 'emacs-lisp-mode-map
