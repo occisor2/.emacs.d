@@ -9,6 +9,12 @@
   `(when (eq system-type ',type)
      ,@body))
 
+(defmacro without-system (type &rest body)
+  "Evaluate BODY if `system-type' does not equal TYPE."
+  (declare (indent defun))
+  `(unless (eq system-type ',type)
+     ,@body))
+
 (defun font-exists-p (font)
   "Check if font is available"
   (if (null (x-list-fonts font)) nil t))
