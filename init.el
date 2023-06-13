@@ -314,14 +314,14 @@
     (setq doom-modeline-icon nil)))
 
 ;; Treesitter
-(when (boundp 'major-mode-remap-alist)
-  (setq major-mode-remap-alist
-        '((c++-mode . c++-ts-mode))))
-
 (use-package tree-sitter
-  :disabled nil
   :if (version<= "29" emacs-version)
+  :unless (eq system-type 'window-nt)
   :defer t
+  :init
+  (when (boundp 'major-mode-remap-alist)
+    (setq major-mode-remap-alist
+          '((c++-mode . c++-ts-mode))))
   :config
   (setq treesit-extra-load-path
         (list (expand-file-name "tree-sitter" my-local-dir))
