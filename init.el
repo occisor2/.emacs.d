@@ -308,7 +308,10 @@
   :hook
   (after-init . (lambda ()
                   (doom-modeline-mode 1)
-                  (column-number-mode 1))))
+                  (column-number-mode 1)))
+  :config
+  (with-system windows-nt
+    (setq doom-modeline-icon nil)))
 
 ;; Treesitter
 (when (boundp 'major-mode-remap-alist)
