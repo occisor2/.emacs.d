@@ -1,5 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
+;; Disbale garbage collection during startup (reset later)
+(setq gc-cons-threshold most-positive-fixnum)
+
 ;; Change the default location of native comp files
 (when (native-comp-available-p)
   (let ((cache-dir (expand-file-name "local/eln-cache/"

@@ -214,6 +214,10 @@
 
 ;;; Package/Features/Modes configuration
 
+;; Garbage collection tweaks
+(use-package gcmh
+  :hook
+  (after-init . gcmh-mode))
 ;; Whichkey
 (use-package which-key
   :hook
