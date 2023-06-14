@@ -218,6 +218,13 @@
 (use-package gcmh
   :hook
   (after-init . gcmh-mode))
+
+;; Init profiler
+(use-package esup
+  :defer t
+  :config
+  (setq esup-depth 0))
+
 ;; Whichkey
 (use-package which-key
   :hook
