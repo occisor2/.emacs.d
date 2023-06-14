@@ -318,9 +318,9 @@
     (setq doom-modeline-icon nil)))
 
 ;; Treesitter
-(without-system window-nt
+(without-system windows-nt
   (use-package tree-sitter
-    :if (version<= "29" emacs-version)
+    :if (>= emacs-major-version 29)
     :defer t
     :init
     (when (boundp 'major-mode-remap-alist)
@@ -332,7 +332,6 @@
           treesit-language-source-alist
           '((c "https://github.com/tree-sitter/tree-sitter-c")
             (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))))
-
 
 ;; Avy
 (use-package avy
