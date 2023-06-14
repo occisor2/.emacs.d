@@ -5,13 +5,13 @@
 
 (defmacro with-system (type &rest body)
   "Evaluate BODY if `system-type' equals TYPE."
-  (declare (indent defun))
+  (declare (indent 1))
   `(when (eq system-type ',type)
      ,@body))
 
 (defmacro without-system (type &rest body)
   "Evaluate BODY if `system-type' does not equal TYPE."
-  (declare (indent defun))
+  (declare (indent 1))
   `(unless (eq system-type ',type)
      ,@body))
 
@@ -37,7 +37,7 @@ Body syntax:
 (def-shortcut prefix
   ([Keybind string] [File name])
   ...)"
-  (declare (indent defun))
+  (declare (indent 1))
   `(general-def
      :prefix ,prefix
      ,@(-flatten-n
