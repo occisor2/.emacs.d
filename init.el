@@ -316,6 +316,7 @@
 
 ;; Modeline
 (use-package doom-modeline
+  :defer t
   :hook
   (after-init . (lambda ()
                   (doom-modeline-mode 1)
