@@ -219,6 +219,11 @@
   :hook
   (after-init . gcmh-mode))
 
+;; Ibuffer
+(use-package ibuffer
+  :general
+  ([remap list-buffers] 'ibuffer))
+
 ;; Init profiler
 (use-package esup
   :defer t
