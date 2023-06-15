@@ -333,13 +333,16 @@
     :init
     (when (boundp 'major-mode-remap-alist)
       (setq major-mode-remap-alist
-            '((c++-mode . c++-ts-mode))))
+            '((c-mode . c-ts-mode)
+              (c++-mode . c++-ts-mode)
+              (rust-mode . rust-ts-mode))))
     :config
     (setq treesit-extra-load-path
           (list (expand-file-name "tree-sitter" my-local-dir))
           treesit-language-source-alist
           '((c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))))
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+            (rust "https://github.com/tree-sitter/tree-sitter-rust")))))
 
 ;; Avy
 (use-package avy
@@ -488,3 +491,15 @@
 ;; Yuck
 (use-package yuck-mode
   :defer t)
+
+;; Rust
+(use-package rust-mode
+  :defer t)
+
+(use-package cargo
+  :hook
+  (rust-ts-mode . cargo-minor-mode)
+  :general
+  (:keymaps
+   'cargo-mode-map
+   "C-, C-c" 'cargo-minor-mode-command-map))
