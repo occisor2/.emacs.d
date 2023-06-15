@@ -461,6 +461,22 @@
   :keymaps 'prog-mode-map
   "C-M-;" 'uncomment-region)
 
+;; Org
+(use-package org
+  :defer t
+  :config
+  (setq org-enforce-todo-dependencies t
+        org-log-done 'time
+        org-agenda-todo-list-sublevels nil
+        org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)"))
+        org-todo-keyword-faces
+        `(("STARTED" . ,(face-attribute 'ansi-color-blue
+                                        :foreground))))
+
+  (add-to-list 'org-faces-easy-properties
+               (cons (face-attribute 'ansi-color-blue :foreground) :foreground)))
+
 ;; Emacs Lisp
 (my-major-def
   :keymaps 'emacs-lisp-mode-map
