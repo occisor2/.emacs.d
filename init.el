@@ -364,36 +364,38 @@
 (use-package yasnippet
   :defer t)
 
-;; LSP Client
-(without-system windows-nt
-  (use-package eglot
-    :hook
-    ((eglot-connect-hook . (lambda ()
-                             (company-mode 1)
-                             (yas-minor-mode 1)))
-     (c++-ts-mode . eglot-ensure))
-    :general
-    (:keymaps
-     'eglot-mode-map
-     :prefix "C-,"
-     "M-R" 'eglot-reconnect
-     "S" 'eglot-shutdown
-     "M-S" 'eglot-shutdown-all
-     "r" 'eglot-rename
-     "f" 'eglot-format
-     "F" 'eglot-format-buffer
-     "a a" 'eglot-code-actions
-     "a o" 'eglot-code-action-organize-imports
-     "a q" 'eglot-code-action-quickfix
-     "a e" 'eglot-code-action-extract
-     "a i" 'eglot-code-action-inline
-     "a r" 'eglot-code-action-rewrite
-     "C-i" 'eglot-inlay-hints-mode
-     "l" 'flymake-show-buffer-diagnostics
-     "L" 'flymake-show-project-diagnostics
-     "i" 'imenu)
-    :config
-    (setq eglot-autoshutdown t)))
+(use-package eglot
+  :hook
+  ((c++-ts-mode . (lambda ()
+                    (eglot-ensure)
+                    (company-mode 1)
+                    (yas-minor-mode 1)))
+   (rust-ts-mode . (lambda ()
+                     (eglot-ensure)
+                     (company-mode 1)
+                     (yas-minor-mode 1))))
+  :general
+  (:keymaps
+   'eglot-mode-map
+   :prefix "C-,"
+   "M-R" 'eglot-reconnect
+   "S" 'eglot-shutdown
+   "M-S" 'eglot-shutdown-all
+   "r" 'eglot-rename
+   "f" 'eglot-format
+   "F" 'eglot-format-buffer
+   "a a" 'eglot-code-actions
+   "a o" 'eglot-code-action-organize-imports
+   "a q" 'eglot-code-action-quickfix
+   "a e" 'eglot-code-action-extract
+   "a i" 'eglot-code-action-inline
+   "a r" 'eglot-code-action-rewrite
+   "C-i" 'eglot-inlay-hints-mode
+   "l" 'flymake-show-buffer-diagnostics
+   "L" 'flymake-show-project-diagnostics
+   "i" 'imenu)
+  :config
+  (setq eglot-autoshutdown t))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
