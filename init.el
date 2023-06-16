@@ -332,15 +332,21 @@
 
 ;; Treesitter
 (without-system windows-nt
+  (when (boundp 'major-mode-remap-alist)
+    (setq major-mode-remap-alist
+          '((c-mode . c-ts-mode)
+            (c++-mode . c++-ts-mode)
+            (rust-mode . rust-ts-mode))))
+  
   (use-package tree-sitter
     :if (>= emacs-major-version 29)
     :defer t
-    :init
-    (when (boundp 'major-mode-remap-alist)
-      (setq major-mode-remap-alist
-            '((c-mode . c-ts-mode)
-              (c++-mode . c++-ts-mode)
-              (rust-mode . rust-ts-mode))))
+    ;; :init
+    ;; (when (boundp 'major-mode-remap-alist)
+    ;;   (setq major-mode-remap-alist
+    ;;         '((c-mode . c-ts-mode)
+    ;;           (c++-mode . c++-ts-mode)
+    ;;           (rust-mode . rust-ts-mode))))
     :config
     (setq treesit-extra-load-path
           (list (expand-file-name "tree-sitter" my-local-dir))
