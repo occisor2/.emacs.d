@@ -332,28 +332,15 @@
 
 ;; Treesitter
 (without-system windows-nt
-  (when (boundp 'major-mode-remap-alist)
-    (setq major-mode-remap-alist
-          '((c-mode . c-ts-mode)
-            (c++-mode . c++-ts-mode)
-            (rust-mode . rust-ts-mode))))
-  
   (use-package tree-sitter
     :if (>= emacs-major-version 29)
+    :hook
+    ((c++-mode . (lambda ()
+                   (tree-sitter-mode 1)
+                   (tree-sitter-hl-mode 1))))
     :defer t
-    ;; :init
-    ;; (when (boundp 'major-mode-remap-alist)
-    ;;   (setq major-mode-remap-alist
-    ;;         '((c-mode . c-ts-mode)
-    ;;           (c++-mode . c++-ts-mode)
-    ;;           (rust-mode . rust-ts-mode))))
     :config
-    (setq treesit-extra-load-path
-          (list (expand-file-name "tree-sitter" my-local-dir))
-          treesit-language-source-alist
-          '((c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-            (rust "https://github.com/tree-sitter/tree-sitter-rust")))))
+    (use-package tree-sitter-langs)))
 
 ;; Avy
 (use-package avy
@@ -379,14 +366,18 @@
 (without-system 'windows-nt
   (use-package eglot
     :hook
-    ((c++-ts-mode . (lambda ()
-                      (eglot-ensure)
-                      (company-mode 1)
-                      (yas-minor-mode 1)))
-     (rust-ts-mode . (lambda ()
-                       (eglot-ensure)
-                       (company-mode 1)
-                       (yas-minor-mode 1))))
+    ((c++-mode . (lambda ()
+                   (eglot-ensure)
+                   (company-mode 1)
+                   (yas-minor-mode 1)))
+     (rust-mode . (lambda ()
+                    (eglot-ensure)
+                    (company-mode 1)
+                    (yas-minor-mode 1)))
+     (cmake-mode . (lambda ()
+                     (eglot-ensure)
+                     (company-mode 1)
+                     (yas-minor-mode 1))))
     :general
     (:keymaps
      'eglot-mode-map
@@ -518,6 +509,10 @@
                           (other . "linux")))
 
   (setq-default c-auto-newline t))
+
+;; Cmake
+(use-package cmake-mode
+  :defer t)
 
 ;; Yuck
 (use-package yuck-mode
