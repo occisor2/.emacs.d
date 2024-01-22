@@ -96,8 +96,18 @@
 (setq ring-bell-function #'ignore
       visible-bell nil)
 
+;; From Doom Emacs
 ;; Set conding system to utf-8 by default
-(set-default-coding-systems 'utf-8)
+;; Contrary to what many Emacs users have in their configs, you don't need more
+;; than this to make UTF-8 the default coding system:
+(set-language-environment "UTF-8")
+;; ...but `set-language-environment' also sets `default-input-method', which is
+;; a step too opinionated.
+(setq default-input-method nil)
+;; ...And the clipboard on Windows could be in a wider encoding (UTF-16), so
+;; leave Emacs to its own devices.
+(with-system windows-nt
+  (setq selection-coding-system 'utf-8))
 
 ;; Set default font
 (defvar my-default-font "Dejavu Sans Mono-11")
@@ -106,6 +116,28 @@
   (set-frame-font "Dejavu Sans Mono-11" nil t))
 
 ;;; QOL improvements
+
+;; Nice startup screen
+(use-package dashboard
+  :init
+  (setq dashboard-banner-logo-title "Welcome Home"
+        dashboard-set-footer nil
+        dashboard-display-icons-p t
+        dashboard-icon-type 'nerd-icons
+        ;; dashboard-set-file-icons t
+        dashboard-set-heading-icons t
+        dashboard-center-content t
+        dashboard-startup-banner (expand-file-name "fancy-emacs-logo.svg"
+                                                   user-emacs-directory)
+        dashboard-image-banner-max-height 400
+        dashboard-image-banner-max-height 400
+        dashboard-projects-backend 'project-el
+        dashboard-items '((recents . 5)
+                          (projects . 5)))
+    (setq dashboard-heading-icons '((recents . "nf-oct-history")
+                                    (projects . "nf-oct-rocket")))
+    :config
+    (dashboard-setup-startup-hook))
 
 ;; Quiet startup
 (setq inhibit-startup-message t
@@ -133,6 +165,7 @@
 
 ;; Configure backups and lockfiles
 (setq create-lockfiles nil
+      remote-file-name-inhibit-locks t
       make-backup-files t
       version-control t     ; number each backup file
       backup-by-copying t   ; instead of renaming current file (clobbers links)
@@ -206,23 +239,31 @@
            (symbol-value my-default-theme) (symbol-value my-backup-theme))
   (load-theme my-backup-theme t))
 
-;; File shortcuts
-;; (def-file-shortcut "C-c f"
-;;   ("i" user-init-file)
-;;   ("e" early-init-file)
-;;   ("p" "~/projects"))
-
 ;;; Package/Features/Modes configuration
 
 ;; Garbage collection tweaks
 (use-package gcmh
   :hook
-  (after-init . gcmh-mode))
+  (after-init . gcmh-mode)
+  :config
+  (setq gcmh-idle-delay 'auto  ; default is 15s
+        gcmh-auto-idle-delay-factor 10
+        gcmh-high-cons-threshold (* 16 1024 1024))  ; 16mb
+  )
 
 ;; Ibuffer
 (use-package ibuffer
   :general
   ([remap list-buffers] 'ibuffer))
+
+;; Tramp
+(use-package tramp
+  ;; Bug in emacs 29.1 that casues elisp errors
+  :disabled (version= emacs-version "29.1")
+  :defer t
+  :init
+  (setq tramp-persistency-file-name (expand-file-name "tramp"
+                                                      my-cache-dir)))
 
 ;; Init profiler
 (use-package esup
@@ -240,7 +281,8 @@
   :hook
   (after-init . recentf-mode)
   :config
-  (setq recentf-save-file (expand-file-name "recentf" my-cache-dir)))
+  (setq recentf-save-file (expand-file-name "recentf" my-cache-dir)
+        recentf-max-saved-items 50))
 
 ;; Autofill
 (add-hook 'prog-mode-hook #'auto-fill-mode)
@@ -284,10 +326,23 @@
   :hook
   (prog-mode . display-line-numbers-mode))
 
-;; Rainbow pans
+;; Rainbow parens
 (use-package rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode))
+
+;; Hydra 
+(use-package hydra
+  :general
+  (general-def
+    "C-x R" 'hydra-resize/body)
+  :config
+  ;; My Hydras
+  (defhydra hydra-resize ()
+    "resize"
+    ("h" enlarge-window-horizontally)
+    ("l" shrink-window-horizontally)
+    ("q" nil "quit")))
 
 ;; Helm
 (use-package helm
@@ -321,7 +376,6 @@
 
 ;; Modeline
 (use-package doom-modeline
-  :defer t
   :hook
   (after-init . (lambda ()
                   (doom-modeline-mode 1)
@@ -331,14 +385,14 @@
     (setq doom-modeline-icon nil)))
 
 ;; Treesitter
-(without-system windows-nt
+(when (and (>= emacs-major-version 29)
+           (eq system-type 'gnu/linux))
   (use-package tree-sitter
-    :if (>= emacs-major-version 29)
+    :defer t
     :hook
     ((c++-mode . (lambda ()
                    (tree-sitter-mode 1)
                    (tree-sitter-hl-mode 1))))
-    :defer t
     :config
     (use-package tree-sitter-langs)))
 
@@ -349,57 +403,80 @@
   ("C-;" 'avy-goto-char)
   ("C-:" 'avy-goto-char-2))
 
+;; Ace window and windows in general
+(use-package ace-window
+  :general
+  (general-def
+    "M-o" 'ace-window))
+
+(my-leader-def
+  "w" '(nil :wk "windows")
+  "w v" 'split-window-right
+  "w h" 'split-window-below)
+
 ;; Projects
 (use-package project
   :config
   (setq project-list-file (expand-file-name "projects" my-local-dir)))
-
-;; EDE
-(use-package ede
-  :defer t)
 
 ;; Snippets
 (use-package yasnippet
   :defer t)
 
 ;; Lsp client
-(without-system 'windows-nt
-  (use-package eglot
-    :hook
-    ((c++-mode . (lambda ()
+(with-system gnu/linux
+  (use-package lsp-mode
+    :defer t
+    :init
+    (setq lsp-enable-on-type-formatting nil
+          lsp-enable-indentation nil
+          lsp-enable-suggest-server-download nil
+          lsp-enable-text-document-color nil
+          lsp-enable-folding nil)
+    :config
+    (use-package lsp-ui
+      :init
+      (setq lsp-ui-peek-enable nil
+            lsp-ui-doc-enable nil))))
+
+
+(use-package eglot
+  :disabled t
+  :hook
+  ((c++-mode . (lambda ()
+                 (eglot-ensure)
+                 (company-mode 1)
+                 (yas-minor-mode 1)))
+   (rust-mode . (lambda ()
+                  (eglot-ensure)
+                  (company-mode 1)
+                  (yas-minor-mode 1)))
+   (cmake-mode . (lambda ()
                    (eglot-ensure)
                    (company-mode 1)
-                   (yas-minor-mode 1)))
-     (rust-mode . (lambda ()
-                    (eglot-ensure)
-                    (company-mode 1)
-                    (yas-minor-mode 1)))
-     (cmake-mode . (lambda ()
-                     (eglot-ensure)
-                     (company-mode 1)
-                     (yas-minor-mode 1))))
-    :general
-    (:keymaps
-     'eglot-mode-map
-     :prefix "C-,"
-     "M-R" 'eglot-reconnect
-     "S" 'eglot-shutdown
-     "M-S" 'eglot-shutdown-all
-     "r" 'eglot-rename
-     "f" 'eglot-format
-     "F" 'eglot-format-buffer
-     "a a" 'eglot-code-actions
-     "a o" 'eglot-code-action-organize-imports
-     "a q" 'eglot-code-action-quickfix
-     "a e" 'eglot-code-action-extract
-     "a i" 'eglot-code-action-inline
-     "a r" 'eglot-code-action-rewrite
-     "C-i" 'eglot-inlay-hints-mode
-     "l" 'flymake-show-buffer-diagnostics
-     "L" 'flymake-show-project-diagnostics
-     "i" 'imenu)
-    :config
-    (setq eglot-autoshutdown t)))
+                   (yas-minor-mode 1))))
+  :general
+  (:keymaps
+   'eglot-mode-map
+   :prefix "C-,"
+   "M-R" 'eglot-reconnect
+   "S" 'eglot-shutdown
+   "M-S" 'eglot-shutdown-all
+   "r" 'eglot-rename
+   "f" 'eglot-format
+   "F" 'eglot-format-buffer
+   "a a" 'eglot-code-actions
+   "a o" 'eglot-code-action-organize-imports
+   "a q" 'eglot-code-action-quickfix
+   "a e" 'eglot-code-action-extract
+   "a i" 'eglot-code-action-inline
+   "a r" 'eglot-code-action-rewrite
+   "C-i" 'eglot-inlay-hints-mode
+   "l" 'flymake-show-buffer-diagnostics
+   "L" 'flymake-show-project-diagnostics
+   "i" 'imenu)
+  :config
+  (setq eglot-autoshutdown t))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
@@ -428,6 +505,7 @@
   :defer t
   :general
   (my-leader-def
+    "o" '(nil :wk "open")
     "o e" 'eshell-other-window)
   :config
   (defun eshell-other-window (use-this-window-p)
@@ -444,6 +522,10 @@
     (setq eshell-prompt-function 'epe-theme-lambda))
 
   (setq eshell-directory-name (expand-file-name "eshell" my-local-dir)))
+
+;; Treemacs
+(use-package treemacs
+  :defer t)
 
 ;; Server settings
 (use-package server
@@ -495,7 +577,8 @@
       (c-indent-comments-syntactically-p . t)
       (c-hanging-braces-alist . ())
       (c-hanging-colons-alist . ((access-label . (after))))
-      (c-offsets-alist . ((inline-open . 0)))
+      (c-offsets-alist . ((inline-open . 0)
+                          (innamespace . 0)))
       (c-cleanup-list . (brace-else-brace
                          brace-eleseif-brace
                          defun-close-semi
@@ -524,7 +607,7 @@
 
 (use-package cargo
   :hook
-  (rust-ts-mode . cargo-minor-mode)
+  (rust-mode . cargo-minor-mode)
   :general
   (:keymaps
    'cargo-mode-map

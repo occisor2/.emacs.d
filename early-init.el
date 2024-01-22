@@ -1,16 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
-;; Disbale garbage collection during startup (reset later)
+;; Disable garbage collection during startup (reset later)
 (setq gc-cons-threshold most-positive-fixnum)
 
 ;; Change the default location of native comp files
 (when (native-comp-available-p)
-  (let ((cache-dir (expand-file-name "local/eln-cache/"
-                                     user-emacs-directory)))
-    (if (boundp 'startup-redirect-eln-cache)
-        (startup-redirect-eln-cache cache-dir)
-      (setcar native-comp-eln-load-path
-	          (expand-file-name cache-dir))))
+  (unless (version< emacs-version "29.1")
+    (let ((cache-dir (expand-file-name "local/eln-cache/"
+                                       user-emacs-directory)))
+      (startup-redirect-eln-cache cache-dir)))
   (setq native-comp-async-report-warnings-errors 'silent))
 
 ;; Disable tool, menu, and scroll bars before GUI loads to prevent flash
