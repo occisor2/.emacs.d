@@ -257,13 +257,10 @@
   ([remap list-buffers] 'ibuffer))
 
 ;; Tramp
-(use-package tramp
-  ;; Bug in emacs 29.1 that casues elisp errors
-  :disabled (version= emacs-version "29.1")
-  :defer t
-  :init
-  (setq tramp-persistency-file-name (expand-file-name "tramp"
-                                                      my-cache-dir)))
+(setq tramp-persistency-file-name (expand-file-name my-cache-dir
+                                                    "tramp")
+      ;; Use the user control master settings
+      tramp-use-ssh-controlmaster-options nil)
 
 ;; Init profiler
 (use-package esup
@@ -426,13 +423,17 @@
 ;; Lsp client
 (with-system gnu/linux
   (use-package lsp-mode
-    :defer t
+    :hook
+    ((c++-mode . (lambda ()
+                   (yas-minor-mode 1)
+                   (lsp-deferred))))
     :init
     (setq lsp-enable-on-type-formatting nil
           lsp-enable-indentation nil
           lsp-enable-suggest-server-download nil
           lsp-enable-text-document-color nil
-          lsp-enable-folding nil)
+          lsp-enable-folding nil
+          lsp-session-file (expand-file-name "lsp-session" my-cache-dir))
     :config
     (use-package lsp-ui
       :init
@@ -612,3 +613,14 @@
   (:keymaps
    'cargo-mode-map
    "C-, C-c" 'cargo-minor-mode-command-map))
+
+;; Common Lisp
+(use-package sly
+  :hook
+  ((lisp-mode . (lambda ()
+                  (company-mode 1)
+                  (sly-mode)))
+   (sly-mrepl . (lambda ()
+                  (company-mode 1))))
+  :config
+  (setq inferior-lisp-program "sbcl"))
