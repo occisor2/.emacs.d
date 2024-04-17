@@ -330,6 +330,8 @@
     "resize"
     ("h" enlarge-window-horizontally)
     ("l" shrink-window-horizontally)
+    ("j" enlarge-window)
+    ("k" shrink-window)
     ("q" nil "quit")))
 
 ;; Helm
