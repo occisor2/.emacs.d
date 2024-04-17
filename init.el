@@ -603,6 +603,8 @@
 (use-package lsp-pyright
   :hook
   ((python-mode . lsp)))
+
+;; Rust
 (use-package rust-mode
   :defer t)
 
