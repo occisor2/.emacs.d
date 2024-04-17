@@ -95,10 +95,10 @@
   (setq selection-coding-system 'utf-8))
 
 ;; Set default font
-(defvar my-default-font "Dejavu Sans Mono-11")
+(defvar my-default-font "DejaVuSansM Nerd Font-11")
 
 (when (font-exists-p my-default-font)
-  (set-frame-font "Dejavu Sans Mono-11" nil t))
+  (set-frame-font my-default-font nil t))
 
 ;;; QOL improvements
 
