@@ -284,6 +284,9 @@
 ;; Autofill
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 
+;; Fill column
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
 ;; Electric pairs
 (use-package elec-pair
   :hook
@@ -594,6 +597,12 @@
 
   (setq-default c-auto-newline t))
 
+(use-package nasm-mode)
+
+(use-package disaster
+  :init
+  (setq disaster-assembly-mode 'nasm-mode))
+
 ;; Cmake
 (use-package cmake-mode
   :defer t)
@@ -602,7 +611,10 @@
 (use-package yuck-mode
   :defer t)
 
-;; Rust
+;; Python
+(use-package lsp-pyright
+  :hook
+  ((python-mode . lsp)))
 (use-package rust-mode
   :defer t)
 
@@ -619,8 +631,12 @@
   :hook
   ((lisp-mode . (lambda ()
                   (company-mode 1)
+                  (setq-local fill-column 100)
                   (sly-mode)))
    (sly-mrepl . (lambda ()
                   (company-mode 1))))
   :config
-  (setq inferior-lisp-program "sbcl"))
+  (use-package sly-quicklisp)
+  (use-package sly-asdf)
+  (setq inferior-lisp-program "sbcl"
+        sly-contribs '(sly-fancy sly-quicklisp sly-asdf)))
