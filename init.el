@@ -272,6 +272,9 @@
 ;; Fill column
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
+;; Highlight line
+(add-hook 'prog-mode-hook #'hl-line-mode)
+
 ;; Electric pairs
 (use-package elec-pair
   :hook
