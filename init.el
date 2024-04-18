@@ -415,10 +415,13 @@
 
 ;; Lsp client
 (use-package lsp-mode
+  :general
+  ("C-," '(:keymap lsp-command-map))
   :hook
   ((c++-mode . (lambda ()
                  (yas-minor-mode 1)
-                 (lsp-deferred))))
+                 (lsp-deferred)
+                 (lsp-enable-which-key-integration))))
   :init
   (setq lsp-enable-on-type-formatting nil
         lsp-enable-indentation nil
@@ -432,7 +435,13 @@
   (use-package lsp-ui
     :init
     (setq lsp-ui-peek-enable nil
-          lsp-ui-doc-enable nil)))
+          lsp-ui-doc-enable nil))
+
+  (use-package helm-lsp
+    :general
+    (:keymaps
+     'lsp-mode-map
+     [remap xref-find-apropos] 'helm-lsp-workspace-symbol)))
 
 
 (use-package eglot
