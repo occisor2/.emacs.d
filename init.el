@@ -209,12 +209,16 @@
 
 ;;; Themes
 
-;; Zenburn
 (use-package zenburn-theme
   :defer t)
 
+(use-package doom-themes
+  :defer t
+  :config
+  (doom-themes-org-config))
+
 ;; Default themes
-(defvar my-default-theme 'zenburn)
+(defvar my-default-theme 'doom-gruvbox)
 (defvar my-backup-theme 'leuven)
 
 ;; Load the default theme. If that fails, load the backup and alert
@@ -442,7 +446,6 @@
     (:keymaps
      'lsp-mode-map
      [remap xref-find-apropos] 'helm-lsp-workspace-symbol)))
-
 
 (use-package eglot
   :disabled t
