@@ -414,24 +414,25 @@
   :defer t)
 
 ;; Lsp client
-(with-system gnu/linux
-  (use-package lsp-mode
-    :hook
-    ((c++-mode . (lambda ()
-                   (yas-minor-mode 1)
-                   (lsp-deferred))))
+(use-package lsp-mode
+  :hook
+  ((c++-mode . (lambda ()
+                 (yas-minor-mode 1)
+                 (lsp-deferred))))
+  :init
+  (setq lsp-enable-on-type-formatting nil
+        lsp-enable-indentation nil
+        lsp-enable-suggest-server-download nil
+        lsp-enable-text-document-color nil
+        lsp-enable-folding nil
+        lsp-session-file (expand-file-name "lsp-session"
+                                           my-cache-dir)
+        lsp-keymap-prefix "C-,")
+  :config
+  (use-package lsp-ui
     :init
-    (setq lsp-enable-on-type-formatting nil
-          lsp-enable-indentation nil
-          lsp-enable-suggest-server-download nil
-          lsp-enable-text-document-color nil
-          lsp-enable-folding nil
-          lsp-session-file (expand-file-name "lsp-session" my-cache-dir))
-    :config
-    (use-package lsp-ui
-      :init
-      (setq lsp-ui-peek-enable nil
-            lsp-ui-doc-enable nil))))
+    (setq lsp-ui-peek-enable nil
+          lsp-ui-doc-enable nil)))
 
 
 (use-package eglot
