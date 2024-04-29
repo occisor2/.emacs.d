@@ -274,6 +274,17 @@
   (setq recentf-save-file (expand-file-name "recentf" my-cache-dir)
         recentf-max-saved-items 50))
 
+;; Desktop mode
+(use-package desktop
+  :defer t
+  :config
+  (setq desktop-path (list (concat my-local-dir "desktop/"))))
+
+;; show-paren-mode
+(use-package paren
+  :config
+  (setq show-paren-context-when-offscreen 'overlay))
+
 ;; Autofill
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 
