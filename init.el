@@ -543,7 +543,23 @@
     :config
     (setq eshell-prompt-function 'epe-theme-lambda))
 
-  (setq eshell-directory-name (expand-file-name "eshell" my-local-dir)))
+  (setq eshell-directory-name (expand-file-name "eshell"
+                                                my-local-dir)))
+
+(use-package eat
+  :defer t
+  :general
+  (my-leader-def
+    "o t" 'eat-other-window)
+  :config
+  (defun eat-other-window (use-this-window-p)
+    "Open a new eat buffer in other window or use the same window."
+    (interactive "P")
+    (let ((buff (eat)))
+      (if use-this-window-p
+          (switch-to-buffer buff)
+        (switch-to-buffer (other-buffer buff))
+        (switch-to-buffer-other-window buff)))))
 
 ;; Treemacs
 (use-package treemacs
