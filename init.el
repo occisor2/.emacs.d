@@ -100,6 +100,10 @@
 (when (font-exists-p my-default-font)
   (set-frame-font my-default-font nil t))
 
+;; Icons
+(use-package nerd-icons
+  :defer t)
+
 ;;; QOL improvements
 
 ;; Nice startup screen
