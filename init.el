@@ -124,7 +124,8 @@
         dashboard-items '((recents . 5)
                           (projects . 5)))
     (setq dashboard-heading-icons '((recents . "nf-oct-history")
-                                    (projects . "nf-oct-rocket")))
+                                    (projects . "nf-oct-rocket")
+                                    (agenda . "nf-oct-calendar")))
     :config
     (dashboard-setup-startup-hook))
 
@@ -585,18 +586,45 @@
 ;; Org
 (use-package org
   :defer t
+  :general
+  (:prefix "C-c m"
+   "a" 'org-agenda
+   "c" 'org-capture)
   :config
-  (setq org-enforce-todo-dependencies t
-        org-log-done 'time
-        org-agenda-todo-list-sublevels nil
-        org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)"))
-        org-todo-keyword-faces
-        `(("STARTED" . ,(face-attribute 'ansi-color-blue
-                                        :foreground))))
+  (setq org-startup-indented t)
+  ;; (setq org-enforce-todo-dependencies t
+  ;;       org-log-done 'time
+  ;;       org-agenda-todo-list-sublevels nil
+  ;;       org-todo-keywords
+  ;;       '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)"))
+  ;;       org-todo-keyword-faces
+  ;;       `(("STARTED" . ,(face-attribute 'ansi-color-blue
+  ;;                                       :foreground))))
 
-  (add-to-list 'org-faces-easy-properties
-               (cons (face-attribute 'ansi-color-blue :foreground) :foreground)))
+  ;; (add-to-list 'org-faces-easy-properties
+  ;;              (cons (face-attribute 'ansi-color-blue :foreground) :foreground))
+  (setq org-agenda-files (list "~/org/notes.org"
+                               "~/org/school.org")
+        org-default-notes-file (concat org-directory "/notes.org")
+        org-refile-targets (quote ((nil :maxlevel . 9)
+                                   (org-agenda-files :maxlevel . 9)))
+        org-display-custom-times t
+        org-time-stamp-custom-formats '("<%m/%d/%y %a>" . "<%m/%d/%y %a %I:%M %p>"))
+
+  (setq org-capture-templates
+        '(("t" "todo" entry (file org-default-notes-file)
+           "* TODO %?\n %u\n %a\n")
+          ("T" "Test" entry (file+headline  "~/org/school.org" "Tests")
+           "* TODO %?\n %t\n %^{CLASS}p\n")
+          ("a" "Assignment" entry (file+headline "~/org/school.org" "Assignments")
+           "* TODO %?\n DEADLINE: %t\n %^{CLASS}p\n")))
+
+  (use-package helm-org
+    :config
+    (add-to-list 'helm-completing-read-handlers-alist
+                 '(org-capture . helm-org-completing-read-tags))
+    (add-to-list 'helm-completing-read-handlers-alist
+                 '(org-set-tags . helm-org-completing-read-tags))))
 
 ;; Emacs Lisp
 (my-major-def
