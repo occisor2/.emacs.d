@@ -303,6 +303,10 @@
 (use-package whitespace
   :defer t)
 
+(use-package ws-butler
+  :hook
+  ((prog-mode . ws-butler-mode)))
+
 ;; Saveplace
 (use-package saveplace
   :hook
