@@ -281,6 +281,11 @@
   :config
   (setq desktop-path (list (concat my-local-dir "desktop/"))))
 
+(use-package bookmark
+  :defer t
+  :config
+  (setq bookmark-default-file (concat my-local-dir "bookmarks")))
+
 ;; show-paren-mode
 (use-package paren
   :config
