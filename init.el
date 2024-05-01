@@ -597,7 +597,8 @@
    "a" 'org-agenda
    "c" 'org-capture)
   :config
-  (setq org-startup-indented t)
+  (setq org-startup-indented t
+        org-src-fontify-natively t)
   ;; (setq org-enforce-todo-dependencies t
   ;;       org-log-done 'time
   ;;       org-agenda-todo-list-sublevels nil
@@ -630,7 +631,11 @@
     (add-to-list 'helm-completing-read-handlers-alist
                  '(org-capture . helm-org-completing-read-tags))
     (add-to-list 'helm-completing-read-handlers-alist
-                 '(org-set-tags . helm-org-completing-read-tags))))
+                 '(org-set-tags . helm-org-completing-read-tags)))
+
+  (use-package org-preview-html
+    :config
+    (setq org-preview-html-refresh-configuration 'save)))
 
 ;; Emacs Lisp
 (my-major-def
