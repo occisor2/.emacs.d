@@ -122,7 +122,8 @@
         dashboard-image-banner-max-height 400
         dashboard-projects-backend 'project-el
         dashboard-items '((recents . 5)
-                          (projects . 5)))
+                          (projects . 5)
+                          (agenda . 5)))
     (setq dashboard-heading-icons '((recents . "nf-oct-history")
                                     (projects . "nf-oct-rocket")
                                     (agenda . "nf-oct-calendar")))
