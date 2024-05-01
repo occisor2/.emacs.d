@@ -41,21 +41,6 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; General for keybinds
-(use-package general
-  :defer t
-  ;; :commands
-  ;; (my-create-prefix-definer)
-  :config
-  (defconst leader-prefix "C-c m")
-  (defconst major-prefix "C-.")
-
-  ;; Declare definers
-  (general-create-definer my-leader-def
-    :prefix leader-prefix)
-  (general-create-definer my-major-def
-    :prefix major-prefix))
-
 ;;; Graphical interface preferences
 
 ;; These are disbaled in the early-init, but these variables need to
@@ -175,7 +160,7 @@
 
 ;; Use spaces instead of tabs and set indention level
 (setq-default indent-tabs-mode nil
-	          tab-width 4)
+              tab-width 4)
 
 ;; Change the behavior of the tab key
 (setq-default tab-always-indent t)
@@ -245,13 +230,12 @@
   :config
   (setq gcmh-idle-delay 'auto  ; default is 15s
         gcmh-auto-idle-delay-factor 10
-        gcmh-high-cons-threshold (* 16 1024 1024))  ; 16mb
-  )
+        gcmh-high-cons-threshold (* 16 1024 1024)))
 
 ;; Ibuffer
 (use-package ibuffer
-  :general
-  ([remap list-buffers] 'ibuffer))
+  :bind
+  ([remap list-buffers] . ibuffer))
 
 ;; Tramp
 (setq tramp-persistency-file-name (expand-file-name my-cache-dir
@@ -291,6 +275,7 @@
 
 ;; show-paren-mode
 (use-package paren
+  :defer t
   :config
   (setq show-paren-context-when-offscreen 'overlay))
 
@@ -339,27 +324,26 @@
   (interactive)
   (set-mark-command 1))
 
-(general-def
-  "C-`" 'push-mark-no-activate
-  "M-`" 'jump-to-mark)
+(global-set-key (kbd "C-`") #'push-mark-no-activate)
+(global-set-key (kbd "M-`") #'jump-to-mark)
 
 ;; Line numbers
 (use-package display-line-numbers
   :hook
-  (prog-mode . display-line-numbers-mode))
+  ((prog-mode . display-line-numbers-mode))
+  :bind
+  ("C-c m l" ("line numbers" . display-line-numbers-mode)))
 
 ;; Rainbow parens
 (use-package rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
-;; Hydra 
+;; Hydra
 (use-package hydra
-  :general
-  (general-def
-    "C-x R" 'hydra-resize/body)
+  :bind
+  ("C-x R" . hydra-resize/body)
   :config
-  ;; My Hydras
   (defhydra hydra-resize ()
     "resize"
     ("h" enlarge-window-horizontally)
@@ -372,15 +356,15 @@
 (use-package helm
   :hook
   (after-init . helm-mode)
-  :general
-  ("M-x" 'helm-M-x)
-  ("C-x C-f" 'helm-find-files)
-  ("C-x b" 'helm-mini)
-  ("C-'" 'helm-mark-ring)
-  ("C-s" 'helm-occur)
-  ("C-h a" 'helm-apropos)
-  ("M-y" 'helm-show-kill-ring)
-  ([remap imenu] 'helm-imenu)
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-f" . helm-find-files)
+   ("C-x b" . helm-mini)
+   ("C-'" . helm-mark-ring)
+   ("C-s" . helm-occur)
+   ("C-h a" . helm-apropos)
+   ("M-y" . helm-show-kill-ring)
+   ([remap imenu] . helm-imenu))
   :config
   (setq helm-apropos-fuzzy-match t)
 
@@ -389,10 +373,9 @@
 ;; Company
 (use-package company
   :defer t
-  :general
-  (:keymaps
-   'company-active-map
-   "<tab>" 'company-complete-common-or-cycle)
+  :bind
+  (:map company-active-map
+   ("<tab>" . company-complete-common-or-cycle))
   :config
   (setq company-minimum-prefix-length 1
         company-idle-delay 0.0
@@ -400,6 +383,7 @@
 
 ;; Modeline
 (use-package doom-modeline
+  :defer t
   :hook
   (after-init . (lambda ()
                   (doom-modeline-mode 1)
@@ -422,24 +406,23 @@
 
 ;; Avy
 (use-package avy
-  :general
-  ("M-g M-g" 'avy-goto-line)
-  ("C-;" 'avy-goto-char)
-  ("C-:" 'avy-goto-char-2))
+  :bind
+  (("M-g M-g" . avy-goto-line)
+   ("C-;" . avy-goto-char)
+   ("C-:" . avy-goto-char-2)))
 
 ;; Ace window and windows in general
 (use-package ace-window
-  :general
-  (general-def
-    "M-o" 'ace-window))
+  :bind
+  ("M-o" . ace-window))
 
-(my-leader-def
-  "w" '(nil :wk "windows")
-  "w v" 'split-window-right
-  "w h" 'split-window-below)
+;; (my-window-def
+;;   "v" 'split-window-right
+;;   "h" 'split-window-below)
 
 ;; Projects
 (use-package project
+  :defer t
   :config
   (setq project-list-file (expand-file-name "projects" my-local-dir)))
 
@@ -450,8 +433,8 @@
 ;; Lsp client
 (use-package lsp-mode
   :defer t
-  :general
-  ("C-," '(:keymap lsp-command-map))
+  :bind-keymap
+  (("C-," . lsp-command-map))
   :hook
   ((c++-mode . (lambda ()
                  (yas-minor-mode 1)
@@ -473,10 +456,9 @@
           lsp-ui-doc-enable nil))
 
   (use-package helm-lsp
-    :general
-    (:keymaps
-     'lsp-mode-map
-     [remap xref-find-apropos] 'helm-lsp-workspace-symbol)))
+    :bind
+    (:map lsp-mode-map
+     ([remap xref-find-apropos] . helm-lsp-workspace-symbol))))
 
 (use-package eglot
   :disabled t
@@ -493,35 +475,15 @@
                    (eglot-ensure)
                    (company-mode 1)
                    (yas-minor-mode 1))))
-  :general
-  (:keymaps
-   'eglot-mode-map
-   :prefix "C-,"
-   "M-R" 'eglot-reconnect
-   "S" 'eglot-shutdown
-   "M-S" 'eglot-shutdown-all
-   "r" 'eglot-rename
-   "f" 'eglot-format
-   "F" 'eglot-format-buffer
-   "a a" 'eglot-code-actions
-   "a o" 'eglot-code-action-organize-imports
-   "a q" 'eglot-code-action-quickfix
-   "a e" 'eglot-code-action-extract
-   "a i" 'eglot-code-action-inline
-   "a r" 'eglot-code-action-rewrite
-   "C-i" 'eglot-inlay-hints-mode
-   "l" 'flymake-show-buffer-diagnostics
-   "L" 'flymake-show-project-diagnostics
-   "i" 'imenu)
   :config
   (setq eglot-autoshutdown t))
 
 ;; Hungry delete
 (use-package smart-hungry-delete
-  :general
-  ([remap delete-backward-char] 'smart-hungry-delete-backward-char)
-  ([remap backward-delete-char-untabify] 'smart-hungry-delete-backward-char)
-  ([remap delete-char] 'smart-hungry-delete-forward-char)
+  :bind
+  (([remap delete-backward-char] . smart-hungry-delete-backward-char)
+   ([remap backward-delete-char-untabify] . smart-hungry-delete-backward-char)
+   ([remap delete-char] . smart-hungry-delete-forward-char))
   :init
   (smart-hungry-delete-add-default-hooks))
 
@@ -541,10 +503,6 @@
 ;; Eshell
 (use-package eshell
   :defer t
-  :general
-  (my-leader-def
-    "o" '(nil :wk "open")
-    "o e" 'eshell-other-window)
   :config
   (defun eshell-other-window (use-this-window-p)
     "Open a new eshell buffer in other window or use the same window."
@@ -564,9 +522,6 @@
 
 (use-package eat
   :defer t
-  :general
-  (my-leader-def
-    "o t" 'eat-other-window)
   :config
   (defun eat-other-window (use-this-window-p)
     "Open a new eat buffer in other window or use the same window."
@@ -590,17 +545,14 @@
 ;;; Programming languages
 
 ;; Programming modes
-(general-def
-  :keymaps 'prog-mode-map
-  "C-M-;" 'uncomment-region)
+(define-key prog-mode-map (kbd "C-M-;") #'uncomment-region)
 
 ;; Org
 (use-package org
   :defer t
-  :general
-  (:prefix "C-c m"
-   "a" 'org-agenda
-   "c" 'org-capture)
+  :bind
+  (("C-c m a" . org-agenda)
+   ("C-c m c" . org-capture))
   :config
   (setq org-startup-indented t
         org-src-fontify-natively t
@@ -644,11 +596,11 @@
     (setq org-preview-html-refresh-configuration 'save)))
 
 ;; Emacs Lisp
-(my-major-def
-  :keymaps 'emacs-lisp-mode-map
-  "m" 'emacs-lisp-macroexpand
-  "b" 'eval-buffer
-  "r" 'eval-region)
+;; (my-major-def
+;;   :keymaps 'emacs-lisp-mode-map
+;;   "m" 'emacs-lisp-macroexpand
+;;   "b" 'eval-buffer
+;;   "r" 'eval-region)
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda ()
                                     (company-mode 1)))
@@ -670,9 +622,9 @@
                          brace-eleseif-brace
                          defun-close-semi
                          comment-close-slash))))
-  
+
   (c-add-style "my-cpp-style" my-cpp-style)
-  
+
   (setq c-default-style '((c++-mode . "my-cpp-style")
                           (java-mode . "java")
                           (awk-mode . "awk")
@@ -706,10 +658,8 @@
 (use-package cargo
   :hook
   (rust-mode . cargo-minor-mode)
-  :general
-  (:keymaps
-   'cargo-mode-map
-   "C-, C-c" 'cargo-minor-mode-command-map))
+  :config
+  (define-key cargo-mode-map (kbd "C-, C-c") 'cargo-minor-mode-command-map))
 
 ;; Common Lisp
 (use-package sly
