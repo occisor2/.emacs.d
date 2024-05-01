@@ -286,7 +286,7 @@
 
 (use-package bookmark
   :defer t
-  :config
+  :init
   (setq bookmark-default-file (concat my-local-dir "bookmarks")))
 
 ;; show-paren-mode
