@@ -603,7 +603,8 @@
    "c" 'org-capture)
   :config
   (setq org-startup-indented t
-        org-src-fontify-natively t)
+        org-src-fontify-natively t
+        org-image-actual-width nil)
   ;; (setq org-enforce-todo-dependencies t
   ;;       org-log-done 'time
   ;;       org-agenda-todo-list-sublevels nil
