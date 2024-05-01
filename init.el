@@ -10,7 +10,9 @@
 
 ;; Bootstrap package manager
 (setq straight-base-dir my-local-dir
-      straight-use-package-by-default t)
+      straight-use-package-by-default t
+      straight-vc-git-default-clone-depth '(1 single-branch)
+      straight-check-for-modifications '(check-on-save find-when-checking))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -322,6 +324,7 @@
   (setq save-place-file (expand-file-name "saveplace" my-local-dir)))
 
 ;; Transient mark mode
+;;;###autoload
 (defun push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
    Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
@@ -329,6 +332,7 @@
   (push-mark (point) t nil)
   (message "Pushed mark to ring"))
 
+;;;###autoload
 (defun jump-to-mark ()
   "Jumps to the local mark, respecting the `mark-ring' order.
   This is the same as using \\[set-mark-command] with the prefix argument."
@@ -445,6 +449,7 @@
 
 ;; Lsp client
 (use-package lsp-mode
+  :defer t
   :general
   ("C-," '(:keymap lsp-command-map))
   :hook
@@ -707,6 +712,7 @@
 
 ;; Common Lisp
 (use-package sly
+  :defer t
   :hook
   ((lisp-mode . (lambda ()
                   (company-mode 1)
