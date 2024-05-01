@@ -1,0 +1,18 @@
+#+TITLE:  My Emacs Configuration
+#+AUTHOR: Russell Smith
+#+EMAIL:  russell.smith7502@gmail.com
+#+DESCRIPTION: This is the README for my .emacs.d
+#+KEYWORDS: emacs, elisp, dotfiles
+#+LANGUAGE:  en
+
+#+OPTIONS: H:4
+#+OPTIONS: num:nil
+#+OPTIONS: toc:2
+#+OPTIONS: p:t
+
+Here is my hodge podge of elisp fragments and cobbled together packages.
+
+* Requirements
+
+- Emacs 29.2 (I use a lot of bleeding edge features)
+- Linux (there are some settings geared towards windows, but I mainly just use WSL2 now)
