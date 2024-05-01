@@ -10,7 +10,11 @@
 #+OPTIONS: toc:2
 #+OPTIONS: p:t
 
-Here is my hodge podge of elisp fragments and cobbled together packages.
+Here are my hodge podge of elisp fragments and cobbled together packages.
+
+#+ATTR_HTML: :width 10px
+#+ATTR_ORG: :width 20
+[[./fancy-emacs-logo.svg]]
 
 * Requirements
 
