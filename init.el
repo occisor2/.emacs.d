@@ -408,8 +408,7 @@
 (use-package avy
   :bind
   (("M-g M-g" . avy-goto-line)
-   ("C-;" . avy-goto-char)
-   ("C-:" . avy-goto-char-2)))
+   ("C-;" . avy-goto-char-timer)))
 
 ;; Ace window and windows in general
 (use-package ace-window
