@@ -429,6 +429,14 @@
 (use-package yasnippet
   :defer t)
 
+;; Flymake
+(use-package flymake
+  :defer t
+  :bind
+  (:map lsp-mode-map
+   ("C-< p" . flymake-show-project-diagnostics)
+   ("C-< b" . flymake-show-project-diagnostics)))
+
 ;; Lsp client
 (use-package lsp-mode
   :defer t
