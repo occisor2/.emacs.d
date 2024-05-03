@@ -647,6 +647,12 @@
 (use-package cmake-mode
   :defer t)
 
+(use-package cmake-integration
+  :defer t
+  :straight (cmake-integration :type git
+                               :host github
+                               :repo "darcamo/cmake-integration"))
+
 ;; Yuck
 (use-package yuck-mode
   :defer t)
