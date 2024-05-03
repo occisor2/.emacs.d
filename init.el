@@ -546,7 +546,9 @@
 
 ;; Treemacs
 (use-package treemacs
-  :defer t)
+  :defer t
+  :config
+  (setq treemacs-persist-file (concat my-cache-dir "treemacs-persist")))
 
 ;; Server settings
 (use-package server
