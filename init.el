@@ -445,19 +445,24 @@
         lsp-enable-suggest-server-download nil
         lsp-enable-text-document-color nil
         lsp-enable-folding nil
+        lsp-lens-enable t
+        lsp-inlay-hint-enable t
+        lsp-eldoc-enable-hover t
         lsp-session-file (expand-file-name "lsp-session"
                                            my-cache-dir)
         lsp-keymap-prefix "C-,")
   :config
   (use-package lsp-ui
     :init
-    (setq lsp-ui-peek-enable nil
-          lsp-ui-doc-enable nil))
+    (setq lsp-ui-doc-enable nil
+          lsp-ui-peek-enable nil
+          lsp-ui-sideline-enable t
+          lsp-ui-sideline-show-diagnostics t))
 
   (use-package helm-lsp
     :bind
     (:map lsp-mode-map
-     ([remap xref-find-apropos] . helm-lsp-workspace-symbol))))
+          ([remap xref-find-apropos] . helm-lsp-workspace-symbol))))
 
 (use-package eglot
   :disabled t
