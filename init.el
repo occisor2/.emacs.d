@@ -621,7 +621,8 @@
       (c-hanging-braces-alist . ())
       (c-hanging-colons-alist . ((access-label . (after))))
       (c-offsets-alist . ((inline-open . 0)
-                          (innamespace . 0)))
+                          (innamespace . 0)
+                          (comment-intro . 0)))
       (c-cleanup-list . (brace-else-brace
                          brace-eleseif-brace
                          defun-close-semi
