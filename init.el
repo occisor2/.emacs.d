@@ -339,6 +339,11 @@
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
+;; Zoom mode for window sizing
+(use-package zoom
+  :hook
+  (after-init . zoom-mode))
+
 ;; Hydra
 (use-package hydra
   :bind
