@@ -615,7 +615,8 @@
 ;;   "r" 'eval-region)
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda ()
-                                    (company-mode 1)))
+                                    (company-mode 1)
+                                    (setq-local fill-column 100)))
 
 ;; C/C++
 (use-package cc-mode
