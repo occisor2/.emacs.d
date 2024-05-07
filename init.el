@@ -474,7 +474,9 @@
         lsp-eldoc-enable-hover t
         lsp-session-file (expand-file-name "lsp-session"
                                            my-cache-dir)
-        lsp-keymap-prefix "C-,")
+        lsp-keymap-prefix "C-,"
+        lsp-clients-clangd-args (list "--header-insertion-decorators=0"
+                                      "--header-insertion=never"))
   :config
   (use-package lsp-ui
     :init
@@ -639,6 +641,9 @@
 ;; C/C++
 (use-package cc-mode
   :defer t
+  :hook
+  ((c-mode-common . (lambda ()
+                      (setq-local fill-column 80))))
   :config
   (defconst my-cpp-style
     '("linux"
