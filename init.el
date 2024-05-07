@@ -243,6 +243,17 @@
       ;; Use the user control master settings
       tramp-use-ssh-controlmaster-options nil)
 
+;; Dired
+(use-package casual-dired
+  :straight (casual-dired :type git
+                          :host github
+                          :repo "kickingvegas/casual-dired")
+  :bind
+  (:map dired-mode-map
+        ("C-o" . 'casual-dired-tmenu))
+  :config
+  (setq casual-dired-use-utf8-symbols nil))
+
 ;; Init profiler
 (use-package esup
   :defer t
