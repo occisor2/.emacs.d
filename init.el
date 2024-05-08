@@ -450,8 +450,8 @@
   :defer t
   :bind
   (:map lsp-mode-map
-   ("C-< p" . flymake-show-project-diagnostics)
-   ("C-< b" . flymake-show-project-diagnostics)))
+   ("C-, d p" ("project" . flymake-show-project-diagnostics))
+   ("C-, d b" ("buffer" . flymake-show-buffer-diagnostics))))
 
 ;; Lsp client
 (use-package lsp-mode
@@ -476,6 +476,7 @@
                                            my-cache-dir)
         lsp-keymap-prefix "C-,"
         lsp-clients-clangd-args (list "--header-insertion-decorators=0"
+                                      ;; clangd sucks at picking the right header
                                       "--header-insertion=never"))
   :config
   (use-package lsp-ui
