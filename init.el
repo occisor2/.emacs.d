@@ -447,11 +447,11 @@
 
 ;; Flymake
 (use-package flymake
-  :defer t
-  :bind
-  (:map lsp-mode-map
-   ("C-, d p" ("project" . flymake-show-project-diagnostics))
-   ("C-, d b" ("buffer" . flymake-show-buffer-diagnostics))))
+  :defer t)
+  ;; :bind
+  ;; (:map lsp-mode-map
+  ;;  ("C-, d p" ("project" . flymake-show-project-diagnostics))
+  ;;  ("C-, d b" ("buffer" . flymake-show-buffer-diagnostics))))
 
 ;; Lsp client
 (use-package lsp-mode
@@ -462,7 +462,11 @@
   ((c++-mode . (lambda ()
                  (yas-minor-mode 1)
                  (lsp-deferred)
-                 (lsp-enable-which-key-integration))))
+                 (lsp-enable-which-key-integration)))
+   ((c-mode . (lambda ()
+                (yas-minor-mode 1)
+                (lsp-deferred)
+                (lsp-enable-which-key-integration)))))
   :init
   (setq lsp-enable-on-type-formatting nil
         lsp-enable-indentation nil
@@ -663,6 +667,7 @@
   (c-add-style "my-cpp-style" my-cpp-style)
 
   (setq c-default-style '((c++-mode . "my-cpp-style")
+                          (c-mode . "my-cpp-style")
                           (java-mode . "java")
                           (awk-mode . "awk")
                           (other . "linux")))
