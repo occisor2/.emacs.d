@@ -632,6 +632,19 @@
     :config
     (setq org-preview-html-refresh-configuration 'save)))
 
+;; Latex
+(use-package tex
+  :straight auctex
+  :defer t
+  :config
+  (setq TeX-auto-save t
+        TeX-parse-self t))
+
+(use-package latex-preview-pane
+  :defer t
+  :config
+  (latex-preview-pane-enable))
+
 ;; Emacs Lisp
 ;; (my-major-def
 ;;   :keymaps 'emacs-lisp-mode-map
