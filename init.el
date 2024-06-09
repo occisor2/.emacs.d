@@ -567,6 +567,12 @@
         (switch-to-buffer (other-buffer buff))
         (switch-to-buffer-other-window buff)))))
 
+(use-package toggle-term
+  :bind
+  (("C-c m ." . toggle-term-shell))
+  :config
+  (setq term-toggle-kill-buffer-on-term-exit t))
+
 ;; Treemacs
 (use-package treemacs
   :defer t
