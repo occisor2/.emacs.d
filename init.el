@@ -381,9 +381,7 @@
    ("M-y" . helm-show-kill-ring)
    ([remap imenu] . helm-imenu))
   :config
-  (setq helm-apropos-fuzzy-match t)
-
-  (use-package helm-xref))
+  (setq helm-apropos-fuzzy-match t))
 
 ;; Company
 (use-package company
