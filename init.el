@@ -572,21 +572,17 @@
 
 (use-package eat
   :defer t
-  :config
-  (defun eat-other-window (use-this-window-p)
-    "Open a new eat buffer in other window or use the same window."
-    (interactive "P")
-    (let ((buff (eat)))
-      (if use-this-window-p
-          (switch-to-buffer buff)
-        (switch-to-buffer (other-buffer buff))
-        (switch-to-buffer-other-window buff)))))
-
-(use-package toggle-term
   :bind
-  (("C-c m ." . toggle-term-shell))
+  (("C-c m ." . eat)
+   :map eat-semi-char-mode-map
+   ("C-c C-k" . (lambda ()
+                (interactive)
+                (eat-kill-process)
+                (delete-window))))
   :config
-  (setq term-toggle-kill-buffer-on-term-exit t))
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*eat\\*\\(?:<[[:digit:]]+>\\)?\\'"
+                 (display-buffer-in-side-window (side . bottom)))))
 
 ;; Treemacs
 (use-package treemacs
@@ -626,21 +622,21 @@
 
   ;; (add-to-list 'org-faces-easy-properties
   ;;              (cons (face-attribute 'ansi-color-blue :foreground) :foreground))
-  (setq org-agenda-files (list "~/org/notes.org"
-                               "~/org/school.org")
-        org-default-notes-file (concat org-directory "/notes.org")
-        org-refile-targets (quote ((nil :maxlevel . 9)
-                                   (org-agenda-files :maxlevel . 9)))
-        org-display-custom-times t
-        org-time-stamp-custom-formats '("<%m/%d/%y %a>" . "<%m/%d/%y %a %I:%M %p>"))
+  ;; (setq org-agenda-files (list "~/org/notes.org"
+  ;;                              "~/org/school.org")
+  ;;       org-default-notes-file (concat org-directory "/notes.org")
+  ;;       org-refile-targets (quote ((nil :maxlevel . 9)
+  ;;                                  (org-agenda-files :maxlevel . 9)))
+  ;;       org-display-custom-times t
+  ;;       org-time-stamp-custom-formats '("<%m/%d/%y %a>" . "<%m/%d/%y %a %I:%M %p>"))
 
-  (setq org-capture-templates
-        '(("t" "todo" entry (file org-default-notes-file)
-           "* TODO %?\n %u\n %a\n")
-          ("T" "Test" entry (file+headline  "~/org/school.org" "Tests")
-           "* TODO %?\n %t\n %^{CLASS}p\n")
-          ("a" "Assignment" entry (file+headline "~/org/school.org" "Assignments")
-           "* TODO %?\n DEADLINE: %t\n %^{CLASS}p\n")))
+  ;; (setq org-capture-templates
+  ;;       '(("t" "todo" entry (file org-default-notes-file)
+  ;;          "* TODO %?\n %u\n %a\n")
+  ;;         ("T" "Test" entry (file+headline  "~/org/school.org" "Tests")
+  ;;          "* TODO %?\n %t\n %^{CLASS}p\n")
+  ;;         ("a" "Assignment" entry (file+headline "~/org/school.org" "Assignments")
+  ;;          "* TODO %?\n DEADLINE: %t\n %^{CLASS}p\n")))
 
   (use-package helm-org
     :config
@@ -651,7 +647,15 @@
 
   (use-package org-preview-html
     :config
-    (setq org-preview-html-refresh-configuration 'save)))
+    (setq org-preview-html-refresh-configuration 'save))
+
+  (use-package org-roam
+    :hook
+    ((org-roam-mode . company-mode))
+    :config
+    (setq org-roam-directory (file-truename "~/org-roam")
+          org-roam-db-location (expand-file-name "org-roam.db" my-cache-dir))
+    (org-roam-db-autosync-enable)))
 
 ;; Latex
 (use-package tex
@@ -689,11 +693,22 @@
       (c-basic-offset . 4)
       (c-doc-comment-style . doxygen)
       (c-indent-comments-syntactically-p . t)
-      (c-hanging-braces-alist . ())
-      (c-hanging-colons-alist . ((access-label . (after))))
-      (c-offsets-alist . ((inline-open . 0)
-                          (innamespace . 0)
-                          (comment-intro . 0)))
+      (c-hanging-braces-alist . ((brace-list-open)
+                                 (brace-entry-open)
+                                 (substatement-open after)
+                                 (block-close . c-snug-do-while)
+                                 (arglist-cont-nonempty)
+                                 (inline-open after)
+                                 (statement-cont after)
+                                 (brace-list-open after)))
+      ;; (c-hanging-colons-alist . ((access-label . (after))))
+      (c-offsets-alist . ((statement-block-intro . +)
+                          (knr-argdecl-intro . 0)
+                          (substatement-open . 0)
+                          (substatement-label . 0)
+                          (label . 0)
+                          (inline-open . 0)
+                          (statement-cont . 0)))
       (c-cleanup-list . (brace-else-brace
                          brace-eleseif-brace
                          defun-close-semi
