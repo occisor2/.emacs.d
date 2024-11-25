@@ -254,6 +254,10 @@
 ;;   :config
 ;;   (setq casual-dired-use-utf8-symbols nil))
 
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 ;; Init profiler
 (use-package esup
   :defer t
