@@ -409,6 +409,7 @@
 (use-package tree-sitter
   :if (and (>= emacs-major-version 29)
            (eq system-type 'gnu/linux))
+  :disabled t
   :defer t
   :config
   (setq treesit-language-source-alist
@@ -430,9 +431,8 @@
           (c "https://github.com/tree-sitter/tree-sitter-c")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
 
-  ;; (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  ;; (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  )
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode)))
 
 ;; Avy
 (use-package avy
@@ -721,6 +721,7 @@
 
 (use-package c-ts-mode
   :if (treesit-available-p)
+  :disabled t
   :defer t
   :config
   (setq c-ts-mode-indent-style 'linux
