@@ -444,10 +444,6 @@
   :bind
   ("M-o" . ace-window))
 
-;; (my-window-def
-;;   "v" 'split-window-right
-;;   "h" 'split-window-below)
-
 ;; Projects
 (use-package project
   :defer t
@@ -461,10 +457,6 @@
 ;; Flymake
 (use-package flymake
   :defer t)
-  ;; :bind
-  ;; (:map lsp-mode-map
-  ;;  ("C-, d p" ("project" . flymake-show-project-diagnostics))
-  ;;  ("C-, d b" ("buffer" . flymake-show-buffer-diagnostics))))
 
 ;; Lsp client
 (use-package lsp-mode
