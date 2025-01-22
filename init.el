@@ -469,10 +469,14 @@
                  (yas-minor-mode 1)
                  (lsp-deferred)
                  (lsp-enable-which-key-integration)))
-   ((c-mode . (lambda ()
-                (yas-minor-mode 1)
-                (lsp-deferred)
-                (lsp-enable-which-key-integration)))))
+   (c-mode . (lambda ()
+               (yas-minor-mode 1)
+               (lsp-deferred)
+               (lsp-enable-which-key-integration)))
+   (rust-mode . (lambda ()
+                  (yas-minor-mode 1)
+                  (lsp-deferred)
+                  (lsp-enable-which-key-integration))))
   :init
   (setq lsp-enable-on-type-formatting nil
         lsp-enable-indentation nil
@@ -746,7 +750,9 @@
 
 ;; Rust
 (use-package rust-mode
-  :defer t)
+  :defer t
+  :config
+  (setq rust-format-on-save t))
 
 (use-package cargo
   :hook
