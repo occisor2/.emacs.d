@@ -757,7 +757,7 @@
 
 (use-package cargo
   :hook
-  (rust-mode . cargo-minor-mode)
+  ((rust-mode . cargo-minor-mode))
   :config
   (define-key cargo-mode-map (kbd "C-, C-c") 'cargo-minor-mode-command-map))
 
