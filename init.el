@@ -347,7 +347,7 @@
   :hook
   ((prog-mode . display-line-numbers-mode))
   :bind
-  ("C-c m l" ("line numbers" . display-line-numbers-mode)))
+  (("C-c m l" . display-line-numbers-mode)))
 
 ;; Rainbow parens
 (use-package rainbow-delimiters
