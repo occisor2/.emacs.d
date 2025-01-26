@@ -759,7 +759,9 @@
 
 (use-package cargo
   :hook
-  ((rust-mode . cargo-minor-mode))
+  ((rust-mode . (lambda ()
+                  (setq-local fill-column 100)
+                  (cargo-minor-mode))))
   :config
   (define-key cargo-mode-map (kbd "C-, C-c") 'cargo-minor-mode-command-map))
 
