@@ -277,6 +277,10 @@
   (setq recentf-save-file (expand-file-name "recentf" my-cache-dir)
         recentf-max-saved-items 50))
 
+;; Shortcuts
+(my-def-shortcut
+ "C-c m f i" "~/.emacs.d/init.el")
+
 ;; Desktop mode
 (use-package desktop
   :defer t

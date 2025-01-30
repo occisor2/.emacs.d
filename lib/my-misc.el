@@ -26,7 +26,7 @@
      (interactive)
      ,@body))
 
-(defmacro my-def-shortcut (&rest body)
+(defmacro my-def-shortcut (&body body)
   "Creates keybindings for jumping to common files.
 
 (my-def-shorcut
