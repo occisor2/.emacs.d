@@ -26,29 +26,20 @@
      (interactive)
      ,@body))
 
-(defmacro def-file-shortcut (prefix &rest body)
-  "A definer for file shorcuts.
+(defmacro my-def-shortcut (&rest body)
+  "Creates keybindings for jumping to common files.
 
-Shortcut keybinds are appending to `prefix' and are given a which-key
-hint that is the file name.
-
-The prefix should be a valid emacs prefix.
-Body syntax:
-(def-shortcut prefix
-  ([Keybind string] [File name])
-  ...)"
+(my-def-shorcut
+ \"key binding\" \"path\")"
   (declare (indent 1))
-  `(general-def
-     :prefix ,prefix
-     ,@(-flatten-n
-        1
-        (cl-loop
-         for x in body collect
-         (list
-          (car x)
-          `'((lambda ()
-               (interactive)
-               (find-file ,(cadr x)))
-             :which-key ,(file-name-nondirectory (cadr x))))))))
+  (unless (and (cl-evenp (length body))
+               (not (zerop (length body))))
+    (error "malformed file shortcut body"))
+  `(progn
+     ,@(cl-loop for (path shortcut) on body by #'cddr while shortcut
+                collect `(global-set-key (kbd ,shortcut) (lambda ()
+                                                           (interactive)
+                                                           (find-file ,path))))
+     t))
 
 (provide 'my-misc)
