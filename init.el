@@ -461,21 +461,16 @@
 
 ;; Lsp client
 (use-package lsp-mode
+  :defer t
   :bind-keymap
   (("C-," . lsp-command-map))
   :hook
-  ((c++-mode . (lambda ()
+  ((lsp-mode . (lambda ()
                  (yas-minor-mode 1)
-                 (lsp-deferred)
                  (lsp-enable-which-key-integration)))
-   (c-mode . (lambda ()
-               (yas-minor-mode 1)
-               (lsp-deferred)
-               (lsp-enable-which-key-integration)))
-   (rust-mode . (lambda ()
-                  (yas-minor-mode 1)
-                  (lsp-deferred)
-                  (lsp-enable-which-key-integration))))
+   (c++-mode . lsp-deferred)
+   (c-mode . lsp-deferred)
+   (rust-mode . lsp-deferred))
   :init
   (setq lsp-enable-on-type-formatting nil
         lsp-enable-indentation nil
