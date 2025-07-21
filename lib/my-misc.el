@@ -31,7 +31,7 @@
 
 (my-def-shorcut
  \"key binding\" \"path\")"
-  (declare (indent 1))
+  (declare (indent 2))
   (unless (and (cl-evenp (length body))
                (not (zerop (length body))))
     (error "malformed file shortcut body"))
