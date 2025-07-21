@@ -477,7 +477,8 @@
                  (lsp-enable-which-key-integration)))
    (c++-mode . lsp-deferred)
    (c-mode . lsp-deferred)
-   (rust-mode . lsp-deferred))
+   (rust-mode . lsp-deferred)
+   (python-mode . lsp-deferred))
   :init
   (setq lsp-enable-on-type-formatting nil
         lsp-enable-indentation nil
@@ -494,6 +495,9 @@
                                       ;; clangd sucks at picking the right header
                                       "--header-insertion=never"))
   :config
+  (keymap-set lsp-command-map "e" (define-keymap
+                                    "b" 'flymake-show-buffer-diagnostics
+                                    "p" 'flymake-show-project-diagnostics))
   (use-package lsp-ui
     :init
     (setq lsp-ui-doc-enable nil
@@ -746,9 +750,33 @@
   :defer t)
 
 ;; Python
-(use-package lsp-pyright
+(use-package lsp-pylyzer
+  :disabled t
+  :straight
+  (lsp-pylyzer :type git
+               :host github
+               :repo "emacs-lsp/lsp-pylyzer")
   :hook
-  ((python-mode . lsp)))
+  (python-mode . (lambda ()
+                   (auto-fill-mode -1)
+                   (require 'lsp-pylyzer)
+                   (lsp-deferred))))
+
+(use-package lsp-pyright
+  :disabled t
+  :custom
+  (lsp-pyright-langserver-command "pyright")
+  :hook
+  (python-mode . (lambda ()
+                   (auto-fill-mode -1)
+                   (require 'lsp-pyright)
+                   (lsp-deferred))))
+
+;; (use-package python-mode
+;;   :hook
+;;   (python-mode . (lambda ()
+;;                    ()
+;;                    (auto-fill-mode -1))))
 
 ;; Rust
 (use-package rust-mode
