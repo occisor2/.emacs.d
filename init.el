@@ -91,6 +91,9 @@
 (use-package nerd-icons
   :defer t)
 
+(use-package all-the-icons
+  :defer t)
+
 ;;; QOL improvements
 
 ;; Nice startup screen
