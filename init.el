@@ -156,6 +156,13 @@
       backup-directory-alist (list (cons "." (concat my-cache-dir "backup/")))
       tramp-backup-directory-alist backup-directory-alist)
 
+;; Improved editing commands
+(use-package crux
+  :bind
+  (([remap kill-line] . crux-smart-kill-line)
+   ([remap open-line] . crux-smart-open-line-above)
+   ("C-c r" . crux-rename-file-and-buffer)))
+
 ;;; Basic text formatting
 
 ;; Sentences end in one space these days
@@ -310,6 +317,17 @@
 ;; Highlight line
 (add-hook 'prog-mode-hook #'hl-line-mode)
 
+;; Flash cursor on windwo change
+(use-package beacon
+  :defer t
+  :hook
+  ((after-init . beacon-mode))
+  :config
+  (setq beacon-blink-when-buffer-changes nil
+        beacon-blink-when-point-moves-horizontally nil
+        beacon-blink-when-focused t
+        beacon-blink-when-window-scrolls nil))
+
 ;; Electric pairs
 (use-package elec-pair
   :hook
@@ -452,6 +470,10 @@
   :bind
   ("M-o" . ace-window))
 
+;; Keybinding
+(use-package general
+  :defer t)
+
 ;; Projects
 (use-package project
   :defer t
@@ -462,8 +484,8 @@
 (use-package yasnippet
   :defer t)
 
-;; Flymake
-(use-package flymake
+;; Linter
+(use-package flycheck
   :defer t)
 
 ;; Lsp client
@@ -494,21 +516,45 @@
         lsp-clients-clangd-args (list "--header-insertion-decorators=0"
                                       ;; clangd sucks at picking the right header
                                       "--header-insertion=never"))
-  :config
-  (keymap-set lsp-command-map "e" (define-keymap
-                                    "b" 'flymake-show-buffer-diagnostics
-                                    "p" 'flymake-show-project-diagnostics))
   (use-package lsp-ui
     :init
     (setq lsp-ui-doc-enable nil
           lsp-ui-peek-enable nil
-          lsp-ui-sideline-enable t
-          lsp-ui-sideline-show-diagnostics t))
+          lsp-ui-sideline-show-hover t
+          lsp-ui-sideline-show-diagnostics t
+          ))
 
   (use-package helm-lsp
     :bind
     (:map lsp-mode-map
           ([remap xref-find-apropos] . helm-lsp-workspace-symbol))))
+
+(use-package dap-mode
+  :defer t
+  :hook
+  ((rust-mode . (lambda ()
+                  (require 'dap-gdb)
+                  (setq dap-gdb-debug-program '("rust-gdb" "-i" "dap"))
+
+                  (dap-register-debug-template
+                   (concat "GDB::Run::" (project-name (project-current)))
+                   (list :type "gdb"
+                         :request "launch"
+                         :name (concat "GDB::Run::" (project-name (project-current)))
+                         :program (concat (project-root (project-current)) "target/debug/"
+                                          (project-name (project-current)))
+                         :args "--output a.out test.c"
+                         :cwd (project-root (project-current))
+                         :stopOnEntry t)))))
+  :custom
+  (dap-auto-configure-features '(sessions locals tooltip))
+  :config
+  ;;(setq lsp-enable-dap-auto-configure t)
+  ;;(dap-ui-mode 1)
+  (general-define-key
+   :keymaps 'lsp-mode-map
+   :prefix lsp-keymap-prefix
+   "d" '(dap-hydra t :wk "debugger")))
 
 (use-package eglot
   :disabled t
